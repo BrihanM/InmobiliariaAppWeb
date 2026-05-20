@@ -4,6 +4,10 @@ import { Property } from "../../../domain/entities/property.entity";
 import { randomUUID } from "crypto";
 
 export class PrismaPropertyRepository implements IPropertyRepository {
+  /**
+   * Repositorio Prisma para `Property`.
+   * Encapsula operaciones de persistencia y transforma filas a entidades de dominio.
+   */
   async create(property: any): Promise<Property> {
     // create address first
     await prisma.addresses.create({ data: { id: property.addressId, country: '', state: '', city: '', neighborhood: '', street: '', postal_code: '', latitude: null, longitude: null } }).catch(() => {});
@@ -50,6 +54,7 @@ export class PrismaPropertyRepository implements IPropertyRepository {
   }
 
   async list(filter: any, page: number, pageSize: number): Promise<{ items: Property[]; total: number }> {
+    // Sólo propiedades no eliminadas (soft-delete)
     const where: any = { deleted_at: null };
     if (filter.agentId) where.agent_id = filter.agentId;
     const [items, total] = await Promise.all([
@@ -76,6 +81,7 @@ export class PrismaPropertyRepository implements IPropertyRepository {
   }
 
   async update(id: string, data: Partial<Property>): Promise<Property> {
+    // Actualiza y devuelve la entidad de dominio reconstruida
     const updated = await prisma.properties.update({ where: { id }, data: { ...data, updated_at: new Date() } as any });
     return new Property({
       id: updated.id,
@@ -97,6 +103,7 @@ export class PrismaPropertyRepository implements IPropertyRepository {
   }
 
   async softDelete(id: string): Promise<void> {
+    // Marca la propiedad como eliminada (soft delete)
     await prisma.properties.update({ where: { id }, data: { deleted_at: new Date() } as any });
   }
 }

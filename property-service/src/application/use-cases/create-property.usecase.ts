@@ -8,6 +8,11 @@ export class CreatePropertyUseCase {
   constructor(private propRepo: IPropertyRepository) {}
 
   async execute(dto: CreatePropertyDTO): Promise<Property> {
+    /**
+     * Caso de uso `CreateProperty`:
+     * - Crea la entidad `Address` (valor-objeto) y la entidad `Property` en memoria
+     * - Delegar la persistencia al repositorio (infraestructura)
+     */
     const address = new Address({ id: randomUUID(), ...dto.address });
     // repository should handle address creation and return property
     const property = await this.propRepo.create(

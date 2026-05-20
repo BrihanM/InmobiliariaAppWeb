@@ -17,6 +17,11 @@ export type PropertyProps = {
 };
 
 export class Property {
+  /**
+   * Entidad `Property` del dominio.
+   * Contiene los atributos inmutables y de negocio para una propiedad inmobiliaria.
+   * Las validaciones de invariantes deben ocurrir antes de construir esta entidad (preferiblemente en la capa de aplicación).
+   */
   id: string;
   title: string;
   description: string;

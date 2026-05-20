@@ -4,6 +4,12 @@ import { config } from "../../config";
 cloudinary.config({ cloud_name: process.env.CLOUDINARY_NAME, api_key: process.env.CLOUDINARY_KEY, api_secret: process.env.CLOUDINARY_SECRET });
 
 export class CloudinaryProvider {
+  /**
+   * Sube una imagen a Cloudinary usando un Data URI.
+   * @param buffer - Buffer binario de la imagen
+   * @param filename - identificador público deseado
+   * @returns URL segura de la imagen subida
+   */
   async upload(buffer: Buffer, filename: string): Promise<string> {
     const dataUri = `data:image/jpeg;base64,${buffer.toString('base64')}`;
     const res: any = await cloudinary.uploader.upload(dataUri, { resource_type: 'image', public_id: filename });

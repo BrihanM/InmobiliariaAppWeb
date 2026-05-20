@@ -9,6 +9,12 @@ import { makePropertiesController } from "../controllers/properties.controller";
 
 const router = Router();
 
+/**
+ * Rutas HTTP para `properties`.
+ * Este archivo instancia los casos de uso y el repositorio Prisma,
+ * y monta los handlers provistos por la capa de infraestructura.
+ */
+
 const propRepo = new PrismaPropertyRepository();
 const createUC = new CreatePropertyUseCase(propRepo);
 const listUC = new ListPropertiesUseCase(propRepo);

@@ -14,6 +14,11 @@ export const makePropertiesController = (deps: {
   update: UpdatePropertyUseCase;
   remove: DeletePropertyUseCase;
 }) => ({
+  /**
+   * Crea una nueva propiedad.
+   * Valida la entrada con Zod, delega al caso de uso `CreatePropertyUseCase`
+   * y devuelve el identificador de la entidad creada.
+   */
   create: async (req: Request, res: Response) => {
     const schema = z.object({
       title: z.string(),
@@ -41,6 +46,10 @@ export const makePropertiesController = (deps: {
     res.status(201).json({ id: prop.id });
   },
 
+  /**
+   * Lista propiedades con paginación y filtros básicos.
+   * Los parámetros `page` y `pageSize` se leen desde query.
+   */
   list: async (req: Request, res: Response) => {
     const page = Number(req.query.page ?? 1);
     const pageSize = Number(req.query.pageSize ?? 10);
@@ -49,6 +58,10 @@ export const makePropertiesController = (deps: {
     res.json(result);
   },
 
+  /**
+   * Obtiene una propiedad por `id`.
+   * Responde `404` si no existe.
+   */
   get: async (req: Request, res: Response) => {
     const id = req.params.id;
     const prop = await deps.get.execute(id);
@@ -56,6 +69,10 @@ export const makePropertiesController = (deps: {
     res.json(prop);
   },
 
+  /**
+   * Actualiza una propiedad existente. Los campos permitidos se validan
+   * en la capa de aplicación (DTO/UseCase).
+   */
   update: async (req: Request, res: Response) => {
     const id = req.params.id;
     const dto = req.body;
@@ -63,6 +80,9 @@ export const makePropertiesController = (deps: {
     res.json(updated);
   },
 
+  /**
+   * Eliminación lógica (soft-delete) de una propiedad por `id`.
+   */
   remove: async (req: Request, res: Response) => {
     const id = req.params.id;
     await deps.remove.execute(id);
