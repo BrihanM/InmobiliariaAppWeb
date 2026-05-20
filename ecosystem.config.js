@@ -24,5 +24,13 @@ module.exports = {
       watch: false,
       env: { PORT: 4200 }
     }
+      ,{
+      name: "search-service",
+      cwd: "./search-service",
+      script: "node",
+      args: "dist/src/main.js",
+      watch: false,
+      env: { PORT: 4300 }
+    }
   ]
 };
