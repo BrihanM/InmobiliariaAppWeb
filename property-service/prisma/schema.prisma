@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model properties {
+  id                 String           @id @default(uuid())
+  title              String
+  description        String
+  property_type_id   String
+  transaction_type_id String
+  address_id         String
+  agent_id           String
+  price              Float
+  bedrooms           Int
+  bathrooms          Int
+  area               Float
+  status_id          String
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @updatedAt
+  deleted_at         DateTime?
+  images             property_images[]
+  
+  property_type      property_types @relation(fields: [property_type_id], references: [id])
+  transaction_type   transaction_types @relation(fields: [transaction_type_id], references: [id])
+  status             property_status @relation(fields: [status_id], references: [id])
+  address            addresses @relation(fields: [address_id], references: [id])
+
+  @@index([agent_id])
+  @@index([property_type_id])
+  @@index([transaction_type_id])
+  @@index([status_id])
+}
+
+model property_types {
+  id   String @id @default(uuid())
+  name String @unique
+  properties properties[]
+}
+
+model transaction_types {
+  id   String @id @default(uuid())
+  name String @unique
+  properties properties[]
+}
+
+model property_status {
+  id   String @id @default(uuid())
+  name String @unique
+  properties properties[]
+}
+
+model addresses {
+  id          String  @id @default(uuid())
+  country     String
+  state       String
+  city        String
+  neighborhood String
+  street      String
+  postal_code String
+  latitude    Float?
+  longitude   Float?
+  properties  properties[]
+}
+
+model property_images {
+  id         String   @id @default(uuid())
+  property   properties @relation(fields: [property_id], references: [id])
+  property_id String
+  image_url  String
+  is_primary Boolean  @default(false)
+  created_at DateTime @default(now())
+}

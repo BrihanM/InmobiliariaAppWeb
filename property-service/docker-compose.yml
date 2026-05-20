@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  property-db:
+    image: postgres:18
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: property_service_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - property-db-data:/var/lib/postgresql/data
+
+volumes:
+  property-db-data:

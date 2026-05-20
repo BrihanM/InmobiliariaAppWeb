@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  auth-db:
+    image: postgres:18
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: auth_service_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+
+volumes:
+  auth-db-data:
