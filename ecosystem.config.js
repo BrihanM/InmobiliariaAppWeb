@@ -32,5 +32,13 @@ module.exports = {
       watch: false,
       env: { PORT: 4300 }
     }
+      ,{
+        name: "payment-service",
+        cwd: "./payment-service",
+        script: "node",
+        args: "dist/src/main.js",
+        watch: false,
+        env: { PORT: 4400 }
+      }
   ]
 };
