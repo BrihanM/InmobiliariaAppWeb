@@ -3,6 +3,10 @@ import { prisma } from "../prismaClient";
 import { User } from "../../../domain/entities/user.entity";
 
 export class PrismaUserRepository implements IUserRepository {
+  /**
+   * Repositorio Prisma para la entidad `User`.
+   * Encapsula las operaciones CRUD necesarias por la capa de dominio.
+   */
   async create(user: any): Promise<User> {
     const created = await prisma.users.create({ data: { ...user } });
     return new User({

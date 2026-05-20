@@ -14,6 +14,13 @@ export class RegisterUseCase {
   ) {}
 
   async execute(dto: RegisterDTO): Promise<User> {
+    /**
+     * Flujo de registro:
+     * 1. Verificar si el email ya existe.
+     * 2. Hashear la contraseña.
+     * 3. Crear la entidad `User` y persistirla mediante el repositorio.
+     * 4. (Opcional) Asignar role por defecto.
+     */
     const existing = await this.userRepo.findByEmail(dto.email);
     if (existing) throw new AppError("Email already registered", 409);
 

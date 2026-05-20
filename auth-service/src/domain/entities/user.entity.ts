@@ -12,6 +12,12 @@ export type UserProps = {
 };
 
 export class User {
+  /**
+   * Entidad `User` del dominio.
+   * Representa al usuario del sistema con propiedades inmutables/propiedades de dominio.
+   *
+   * Nota: La lógica de creación y validaciones de invariantes debe residir en el dominio.
+   */
   readonly id: string;
   firstName: string;
   lastName: string;

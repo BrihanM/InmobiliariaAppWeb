@@ -6,6 +6,14 @@ import { createLogger } from "./infrastructure/logger";
 import { errorHandler } from "./infrastructure/http/middlewares/errorHandler";
 import { authRouter } from "./infrastructure/http/routes/auth.route";
 
+/**
+ * Punto de entrada del `auth-service`.
+ *
+ * Este archivo configura Express, middlewares y las rutas de autenticación.
+ * La configuración y el logger se importan desde la capa de infraestructura.
+ * El servicio expone el endpoint base `/auth`.
+ */
+
 const logger = createLogger();
 
 const app = express();
