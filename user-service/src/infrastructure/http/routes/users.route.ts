@@ -10,6 +10,11 @@ import { updateUserSchema, patchRolesSchema } from '../schemas/user.schemas';
 import { authMiddleware, rbac } from '../middlewares/auth.middleware';
 
 const router = Router();
+
+/**
+ * Rutas del `user-service`.
+ * Instancia casos de uso y repositorios y aplica middlewares de autenticación y RBAC.
+ */
 const repo = new PrismaUserRepository();
 const listUC = new ListUsersUseCase(repo);
 const getUC = new GetUserUseCase(repo);

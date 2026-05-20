@@ -3,6 +3,10 @@ import { IUserRepository, UserFilters } from "../../../domain/repositories/user.
 import { User } from "../../../domain/entities/user.entity";
 
 export class PrismaUserRepository implements IUserRepository {
+  /**
+   * Repositorio Prisma para `User`.
+   * Encapsula la lógica de mapeo entre las filas de la BD y las entidades del dominio.
+   */
   async create(user: Partial<User>): Promise<User> {
     const u = await prisma.user.create({ data: { ...user } as any });
     return new User(u.id, u.email, u.password, u.firstName, u.lastName, u.createdAt, u.updatedAt, u.deletedAt);

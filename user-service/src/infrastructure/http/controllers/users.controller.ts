@@ -12,6 +12,10 @@ export const makeUsersController = (deps: {
   delete: DeleteUserUseCase;
   patchRoles: PatchRolesUseCase;
 }) => ({
+  /**
+   * Lista usuarios con paginación y filtros.
+   * Los filtros disponibles: email, firstName, lastName, role.
+   */
   list: async (req: Request, res: Response) => {
     const page = Number(req.query.page ?? 1);
     const pageSize = Number(req.query.pageSize ?? 10);
@@ -20,6 +24,9 @@ export const makeUsersController = (deps: {
     res.json(result);
   },
 
+  /**
+   * Obtiene un usuario por su `id`. Retorna 404 si no existe.
+   */
   get: async (req: Request, res: Response) => {
     const id = req.params.id;
     const user = await deps.get.execute(id);
@@ -27,6 +34,9 @@ export const makeUsersController = (deps: {
     res.json(user);
   },
 
+  /**
+   * Actualiza los campos permitidos del usuario.
+   */
   update: async (req: Request, res: Response) => {
     const id = req.params.id;
     const dto = req.body;
@@ -34,12 +44,19 @@ export const makeUsersController = (deps: {
     res.json(updated);
   },
 
+  /**
+   * Eliminación lógica de un usuario (soft-delete).
+   */
   delete: async (req: Request, res: Response) => {
     const id = req.params.id;
     await deps.delete.execute(id);
     res.status(204).send();
   },
 
+  /**
+   * Actualiza los roles asignados a un usuario.
+   * Espera un array de `roleIds` en el body.
+   */
   patchRoles: async (req: Request, res: Response) => {
     const id = req.params.id;
     const { roles } = req.body;

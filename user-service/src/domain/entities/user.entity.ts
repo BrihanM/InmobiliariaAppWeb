@@ -1,3 +1,9 @@
+/**
+ * Entidad `User` del dominio.
+ * Representa al usuario del sistema con propiedades básicas.
+ * Las validaciones deben realizarse en la capa de aplicación antes
+ * de construir la entidad.
+ */
 export class User {
   constructor(
     public id: string,

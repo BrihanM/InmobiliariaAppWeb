@@ -4,6 +4,11 @@ import { logger } from './infrastructure/logger';
 import { usersRouter } from './infrastructure/http/routes/users.route';
 import { errorHandler } from './infrastructure/http/middlewares/errorHandler';
 
+/**
+ * Punto de entrada del `user-service`.
+ *
+ * Configura el servidor Express, monta las rutas y el middleware global de errores.
+ */
 const app = express();
 app.use(express.json());
 
