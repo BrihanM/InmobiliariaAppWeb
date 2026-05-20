@@ -6,6 +6,11 @@ import logger from '../../logger';
 const repo = new PrismaSearchRepository();
 const usecase = new SearchPropertiesUseCase(repo);
 
+/**
+ * Handler HTTP para la búsqueda de propiedades.
+ * Recoge los parámetros de query, delega en el caso de uso y devuelve
+ * un objeto paginado con los resultados.
+ */
 export const searchPropertiesHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const query = req.query as any;

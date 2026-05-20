@@ -4,6 +4,10 @@ import { searchQuerySchema } from '../schemas/search.schema';
 
 const router = Router();
 
+/**
+ * Ruta GET /properties
+ * Valida la query con Zod y llama al handler de búsqueda.
+ */
 router.get('/properties', (req, res, next) => {
   const parse = searchQuerySchema.safeParse(req.query);
   if (!parse.success) return res.status(400).json({ error: parse.error.format() });

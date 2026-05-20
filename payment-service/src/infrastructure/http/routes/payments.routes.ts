@@ -3,6 +3,13 @@ import { PaymentsController } from '../controllers/payments.controller';
 import { validate } from '../middleware/validation';
 import { CreatePaymentSchema } from '../../../application/dtos/create-payment.dto';
 
+/**
+ * Define las rutas HTTP expuestas por el `payment-service`.
+ * - POST /api/payments: crea un pago y devuelve `clientSecret`.
+ * - GET /api/payments/history: obtiene historial de un usuario.
+ * - POST /api/payments/webhook: fallback informativo; el webhook
+ *   real se monta con raw body en `main.ts`.
+ */
 export default function paymentsRoutes(controller: PaymentsController, stripeWebhookSecret?: string) {
   const router = express.Router();
 

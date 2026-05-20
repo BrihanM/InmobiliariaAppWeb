@@ -5,6 +5,10 @@ export class SearchPropertiesUseCase {
   constructor(private repository: ISearchRepository) {}
 
   async execute(query: SearchQueryDTO): Promise<SearchResultDTO> {
+    /**
+     * Caso de uso de búsqueda de propiedades.
+     * Valida paginación, normaliza filtros y delega en el repositorio.
+     */
     const page = query.page && query.page > 0 ? query.page : 1;
     const pageSize = query.pageSize && query.pageSize > 0 ? Math.min(query.pageSize, 100) : 20;
 

@@ -15,6 +15,15 @@ import selfsigned from 'selfsigned';
 
 const logger = pino();
 
+/**
+ * Punto de entrada de `payment-service`.
+ *
+ * - Configura middlewares de seguridad y parsing.
+ * - Registra las rutas normales bajo `/api` y el endpoint raw
+ *   para webhooks de Stripe (`/api/payments/webhook`).
+ * - Intenta levantar servidor HTTPS con certificados del sistema;
+ *   si faltan, genera un certificado autofirmado para desarrollo.
+ */
 async function start() {
   const app = express();
 

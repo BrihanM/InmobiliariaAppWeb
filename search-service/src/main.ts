@@ -5,6 +5,12 @@ import { PORT } from './infrastructure/config';
 import searchRouter from './infrastructure/http/routes/search.route';
 import { errorHandler } from './infrastructure/http/middlewares/errorHandler';
 
+/**
+ * Punto de entrada del `search-service`.
+ *
+ * Configura middlewares globales (`cors`, JSON body parser), monta las rutas
+ * de búsqueda y registra el manejador de errores centralizado.
+ */
 const app = express();
 app.use(cors());
 app.use(express.json());

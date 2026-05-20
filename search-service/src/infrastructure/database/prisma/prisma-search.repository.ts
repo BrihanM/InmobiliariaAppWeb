@@ -5,6 +5,11 @@ const ALLOWED_ORDER_FIELDS = new Set(['price', 'created_at', 'updated_at', 'titl
 
 export class PrismaSearchRepository implements ISearchRepository {
   async search(filters: SearchFilters, page: number, pageSize: number, order?: OrderSpec) {
+    /**
+     * Implementación Prisma para la búsqueda de propiedades.
+     * Construye el `where` dinámico según filtros, aplica paginación
+     * y retorna un conjunto reducido de campos para optimizar payloads.
+     */
     const skip = (page - 1) * pageSize;
 
     const where: any = { deleted_at: null };
