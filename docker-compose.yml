@@ -1,15 +1,160 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:18
-    restart: always
     environment:
+      POSTGRES_DB: inmobiliaria
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: inmobiliaria
-    ports:
-      - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 5050:80
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  auth-service:
+    build: ./auth-service
+    env_file:
+      - ./auth-service/.env
+    ports:
+      - 4000:4000
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+
+  property-service:
+    build: ./property-service
+    env_file:
+      - ./property-service/.env
+    ports:
+      - 4100:4100
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4100/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+
+  user-service:
+    build: ./user-service
+    env_file:
+      - ./user-service/.env
+    ports:
+      - 4200:4200
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4200/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+
+  search-service:
+    build: ./search-service
+    env_file:
+      - ./search-service/.env
+    ports:
+      - 4300:4300
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4300/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+
+  payment-service:
+    build: ./payment-service
+    env_file:
+      - ./payment-service/.env
+    ports:
+      - 4400:4400
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4400/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+
+  api-gateway:
+    build: ./gateway-service
+    env_file:
+      - ./gateway-service/.env
+    ports:
+      - 3000:3000
+    networks:
+      - internal
+    depends_on:
+      - auth-service
+      - property-service
+      - user-service
+      - search-service
+      - payment-service
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      replicas: 1
 
 volumes:
-  db-data:
+  pgdata:
+  pgadmin:
+
+networks:
+  internal:
+    driver: bridge
