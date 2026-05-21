@@ -14,6 +14,9 @@ const CreatePropertyPage = lazy(() => import('@/features/properties/pages/Create
 const EditPropertyPage = lazy(() => import('@/features/properties/pages/EditPropertyPage'));
 const DashboardPage = lazy(() => import('@/features/dashboard/presentation/pages/DashboardPage'));
 const SearchPage = lazy(() => import('@/features/search/pages/SearchPage'));
+const CheckoutPage = lazy(() => import('@/features/payments/pages/CheckoutPage'));
+const PaymentSuccessPage = lazy(() => import('@/features/payments/pages/PaymentSuccessPage'));
+const PaymentHistoryPage = lazy(() => import('@/features/payments/pages/PaymentHistoryPage'));
 const NotFoundPage = lazy(() => import('@/shared/components/pages/NotFoundPage'));
 
 const loader = (
@@ -36,6 +39,10 @@ export const router = createBrowserRouter([
   {
     element: <AuthGuard />,
     children: [
+      // Any authenticated user
+      { path: '/checkout', element: <Suspense fallback={loader}><CheckoutPage /></Suspense> },
+      { path: '/payment/success', element: <Suspense fallback={loader}><PaymentSuccessPage /></Suspense> },
+      { path: '/payment/history', element: <Suspense fallback={loader}><PaymentHistoryPage /></Suspense> },
       {
         element: <RoleGuard allowedRoles={['ADMIN', 'AGENT']} />,
         children: [
