@@ -1,3 +1,165 @@
+**Resumen**
+
+Este repositorio contiene una arquitectura de microservicios Node.js + TypeScript con una base de datos PostgreSQL y un API Gateway. El siguiente documento explica cómo preparar el entorno, construir y desplegar todo con Docker Compose en Windows (PowerShell), incluyendo migraciones Prisma y comprobaciones básicas.
+
+**Prerequisitos**
+
+- Docker Desktop (con Docker Compose integrado)
+- Node.js (solo para tareas locales, no obligatorio para despliegue)
+- Acceso a la carpeta del proyecto
+
+**Preparar el entorno (copiar .env)**
+
+Cada servicio dispone de un `.env.example`. Crea `.env` para cada servicio (PowerShell):
+
+```powershell
+cd C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria
+Get-ChildItem -Recurse -Filter ".env.example" | ForEach-Object { Copy-Item $_.FullName -Destination (Join-Path $_.DirectoryName ".env") -Force }
+```
+
+Edita los `.env` si necesitas claves reales (JWT_SECRET, STRIPE_SECRET, STRIPE_WEBHOOK_SECRET, etc.).
+
+**Construir y ejecutar (Docker Compose)**
+
+1) Desde PowerShell, en la raíz del proyecto:
+
+```powershell
+cd C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria
+docker compose build --no-cache
+docker compose up -d
+```
+
+2) Alternativamente (build + up en uno):
+
+```powershell
+docker compose up -d --build
+```
+
+**Migraciones Prisma & seed**
+
+Si es la primera vez que levantas la BD, ejecuta las migraciones y el seed desde el servicio que contiene los esquemas (ej. `auth-service` o `user-service`):
+
+```powershell
+# Ejecutar migraciones (producción: usar `prisma migrate deploy` si está disponible)
+docker compose run --rm auth-service npx prisma migrate deploy || docker compose run --rm auth-service npm run prisma:migrate
+
+# Ejecutar el seed (si existe)
+docker compose run --rm auth-service npm run seed
+```
+
+Nota: algunos `package.json` usan `prisma migrate dev` (dev). Para un despliegue automático en CI/CD preferible usar `prisma migrate deploy`.
+
+**Verificar estado y logs**
+
+- Ver contenedores y healthchecks:
+
+```powershell
+docker compose ps
+```
+
+- Ver logs en tiempo real de un servicio (ej. gateway):
+
+```powershell
+docker compose logs -f api-gateway
+```
+
+- Comprobar endpoints de salud (ejemplo):
+
+```powershell
+curl http://localhost:3000/health
+curl http://localhost:3000/auth/health
+```
+
+**Acceso a pgAdmin**
+
+- pgAdmin está expuesto en `http://localhost:5050` (configurado en `docker-compose.yml`).
+- Usuario/clave por defecto (si no cambiaste `.env`): `admin@example.com` / `admin`.
+
+**Volúmenes y limpieza**
+
+Si quieres recrear la base de datos desde cero (dev):
+
+```powershell
+docker compose down
+docker volume rm pgdata pgadmin || true
+docker compose up -d
+```
+
+Advertencia: eliminar volúmenes borra datos persistentes.
+
+**Problemas comunes & soluciones rápidas**
+
+- Prisma falla por falta de OpenSSL/libssl: aseguramos que los Dockerfiles de servicios que usan Prisma instalen `openssl` y `libssl` (se usó `node:20-bullseye-slim` y `apt-get install -y openssl libssl1.1`). Si sigues viendo errores, rebuild:
+
+```powershell
+docker compose build --no-cache auth-service user-service property-service payment-service search-service
+docker compose up -d
+```
+
+- Error por `Cannot find module '@prisma/client'`: mover `@prisma/client` a `dependencies` (ya realizado en `user-service/package.json`) y rebuild.
+
+- pgAdmin rechaza el email por formato: usar un email válido en `docker-compose.yml` o en `PGADMIN_DEFAULT_EMAIL`.
+
+**Despliegue en producción (pautas rápidas)**
+
+- No uses `.env` con secretos en el repo. Usa un gestor de secretos o variables de entorno en la plataforma de despliegue.
+- Para producción, usa `prisma migrate deploy` y `node` en modo producción; considera orquestadores (Kubernetes) para replicas, LB y secretos.
+- Habilita HTTPS (certificados), límites de rate, logging centralizado y monitorización.
+
+**Atajos útiles**
+
+- Reconstruir un solo servicio:
+
+```powershell
+docker compose build --no-cache api-gateway
+docker compose up -d api-gateway
+```
+
+- Ver últimos 200 lines de logs:
+
+```powershell
+docker compose logs --tail=200 user-service
+```
+
+**Archivos importantes**
+
+- `docker-compose.yml` — orquesta todos los servicios.
+- [gateway-service](gateway-service) — gateway reverse-proxy y autenticación.
+- [auth-service](auth-service), [user-service](user-service), [property-service](property-service), [search-service](search-service), [payment-service](payment-service) — microservicios.
+
+Si quieres, puedo:
+- Añadir scripts PowerShell/Makefile para automatizar estos pasos.
+- Preparar una variante `docker-compose.prod.yml` con configuraciones de producción (sin volumes por defecto, secrets, replicas).
+
+Fin del README.
+ 
+**Automatizar todo con PowerShell**
+
+He incluido un script de despliegue automático en `scripts/deploy.ps1` que realiza:
+- Copia de `.env.example` -> `.env` cuando falta
+- `docker compose build --no-cache` y `docker compose up -d`
+- Espera al gateway y ejecuta migraciones y seed
+- Muestra logs y estado final
+
+Ejecutar el script (PowerShell):
+
+```powershell
+cd C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria
+# Si tu política de ejecución lo requiere (sólo para la sesión actual):
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+# Ejecutar el script
+.\scripts\deploy.ps1
+```
+
+El script acepta un parámetro opcional `-TimeoutSeconds` (por defecto 600) para ajustar cuánto tiempo espera al gateway.
+
+Ejemplo con timeout de 10 minutos:
+
+```powershell
+.\scripts\deploy.ps1 -TimeoutSeconds 600
+```
+
+Si quieres, adapto el script para usar `user-service` en lugar de `auth-service` para migraciones/seed, o para añadir pasos extra (ej. ejecutar pruebas post-deploy).
 Inmobiliaria — Guía para ejecutar el backend (local)
 
 Este repositorio contiene varios microservicios en Node.js con arquitectura hexagonal. A continuación se detalla cómo levantar el backend completo localmente usando una base de datos PostgreSQL compartida, ejecutar migraciones con Prisma, poblar datos (seed) y ejecutar los servicios (desarrollo y en segundo plano con PM2).
@@ -92,10 +254,6 @@ Lista mínima de verificación
 - Cada servicio: `npx prisma migrate dev --name init --skip-seed` aplica migraciones
 - Cada servicio: `npm run seed` termina sin errores
 
-Si quieres, puedo añadir un script de bootstrap en la raíz que automatice levantar la BD, instalar dependencias, generar clientes Prisma, aplicar migraciones, seed y arrancar PM2 con un solo comando. ¿Deseas que lo agregue? 
-
-Fin de la guía
-
 ---
 
 Script de bootstrap (automatización)
@@ -132,5 +290,3 @@ Qué hace el script
 
 Notas de seguridad
 - Los scripts ejecutan comandos que modificarán tu entorno (instalaciones npm, creación de contenedores Docker, cambios de base de datos). Revisa el contenido en `scripts/` antes de ejecutarlos.
-
-Fin de la guía
