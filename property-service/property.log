@@ -1,0 +1,31 @@
+
+> property-service@0.1.0 dev
+> ts-node-dev --respawn --transpile-only src/main.ts
+
+[INFO] 00:16:15 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+Compilation error in C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\property-service\src\infrastructure\database\repositories\prisma-property.repository.ts
+[ERROR] 00:16:16 ⨯ Unable to compile TypeScript:
+src/infrastructure/database/repositories/prisma-property.repository.ts(76,3): error TS1434: Unexpected keyword or identifier.
+src/infrastructure/database/repositories/prisma-property.repository.ts(76,18): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(76,32): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(76,52): error TS1005: ';' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(78,11): error TS1005: ':' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(78,120): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(79,12): error TS1005: ':' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(95,7): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(98,3): error TS1434: Unexpected keyword or identifier.
+src/infrastructure/database/repositories/prisma-property.repository.ts(98,22): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(98,31): error TS1005: ';' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(98,45): error TS1109: Expression expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(100,11): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(100,17): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(100,95): error TS1005: ',' expected.
+src/infrastructure/database/repositories/prisma-property.repository.ts(102,1): error TS1128: Declaration or statement expected.
+
+[INFO] 00:19:02 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\property-service\src\infrastructure\database\repositories\prisma-property.repository.ts has been modified
+[1779340743459] [32mINFO[39m (20296 on DESKTOP-6QFS4ED): [36mProperty service started[39m
+    port: 4100
+[INFO] 00:19:16 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\property-service\src\infrastructure\database\repositories\prisma-property.repository.ts has been modified
+[1779340756518] [32mINFO[39m (7560 on DESKTOP-6QFS4ED): [36mProperty service started[39m
+    port: 4100
+^C

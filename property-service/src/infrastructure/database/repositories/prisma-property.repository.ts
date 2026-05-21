@@ -31,53 +31,45 @@ export class PrismaPropertyRepository implements IPropertyRepository {
     });
   }
 
-  async findById(id: string): Promise<Property | null> {
-    const found = await prisma.properties.findUnique({ where: { id } });
-    if (!found) return null;
-    return new Property({
-      id: found.id,
-      title: found.title,
-      description: found.description,
-      propertyTypeId: found.property_type_id,
-      transactionTypeId: found.transaction_type_id,
-      addressId: found.address_id,
-      agentId: found.agent_id,
-      price: found.price,
-      bedrooms: found.bedrooms,
-      bathrooms: found.bathrooms,
-      area: found.area,
-      statusId: found.status_id,
-      createdAt: found.created_at,
-      updatedAt: found.updated_at,
-      deletedAt: found.deleted_at
+  async findById(id: string): Promise<any | null> {
+    return prisma.properties.findUnique({
+      where: { id },
+      include: {
+        property_type: true,
+        status: true,
+        address: true,
+        images: { orderBy: { is_primary: 'desc' } },
+      },
     });
   }
 
-  async list(filter: any, page: number, pageSize: number): Promise<{ items: Property[]; total: number }> {
-    // Sólo propiedades no eliminadas (soft-delete)
+  async list(filter: any, page: number, pageSize: number): Promise<{ items: any[]; total: number }> {
     const where: any = { deleted_at: null };
     if (filter.agentId) where.agent_id = filter.agentId;
+    if (filter.status) where.status = { name: filter.status };
+    if (filter.type) where.property_type = { name: filter.type };
+    if (filter.city) where.address = { city: { contains: filter.city, mode: 'insensitive' } };
+    if (filter.minPrice || filter.maxPrice) {
+      where.price = {};
+      if (filter.minPrice) where.price.gte = Number(filter.minPrice);
+      if (filter.maxPrice) where.price.lte = Number(filter.maxPrice);
+    }
     const [items, total] = await Promise.all([
-      prisma.properties.findMany({ where, skip: (page - 1) * pageSize, take: pageSize }),
-      prisma.properties.count({ where })
+      prisma.properties.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        include: {
+          property_type: true,
+          status: true,
+          address: true,
+          images: { orderBy: { is_primary: 'desc' } },
+        },
+        orderBy: { created_at: 'desc' },
+      }),
+      prisma.properties.count({ where }),
     ]);
-    return { items: items.map((found) => new Property({
-      id: found.id,
-      title: found.title,
-      description: found.description,
-      propertyTypeId: found.property_type_id,
-      transactionTypeId: found.transaction_type_id,
-      addressId: found.address_id,
-      agentId: found.agent_id,
-      price: found.price,
-      bedrooms: found.bedrooms,
-      bathrooms: found.bathrooms,
-      area: found.area,
-      statusId: found.status_id,
-      createdAt: found.created_at,
-      updatedAt: found.updated_at,
-      deletedAt: found.deleted_at
-    })), total };
+    return { items, total };
   }
 
   async update(id: string, data: Partial<Property>): Promise<Property> {

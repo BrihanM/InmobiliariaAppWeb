@@ -31,14 +31,20 @@ async function main() {
   app.get('/health', (_req, res) => res.json({ status: 'ok' }));
   app.get('/ready', (_req, res) => res.json({ status: 'ready' }));
 
-  // Public routes that don't require auth: auth paths (login/register)
-  app.use('/auth', proxyRoutes);
+  // JWT guard: rutas públicas no requieren token
+  app.use((req, res, next) => {
+    const isPublic =
+      req.path.startsWith('/auth') ||
+      req.path.startsWith('/health') ||
+      req.path.startsWith('/ready') ||
+      (req.path.startsWith('/properties') && req.method === 'GET');
 
-  // Protected routes: attach JWT and then proxy
-  app.use('/properties', jwtMiddleware, proxyRoutes);
-  app.use('/users', jwtMiddleware, proxyRoutes);
-  app.use('/search', jwtMiddleware, proxyRoutes);
-  app.use('/payments', jwtMiddleware, proxyRoutes);
+    if (isPublic) return next();
+    return jwtMiddleware(req, res, next);
+  });
+
+  // Proxy hacia microservicios (el router ya tiene el path completo)
+  app.use(proxyRoutes);
 
   // Global error handler
   app.use(errorHandler);

@@ -9,4 +9,4 @@ COPY . .
 RUN npx prisma generate || true
 RUN npm run build
 RUN npm prune --production
-CMD ["node", "dist/src/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/src/main.js"]

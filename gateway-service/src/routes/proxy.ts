@@ -44,11 +44,24 @@ function proxyFor(targets: string[], pathRewrite?: Record<string, string>) {
 
 const router = Router();
 
-// Map route prefixes to microservice clusters
-router.use('/auth', proxyFor(AUTH_TARGETS, { '^/auth': '/' }));
-router.use('/properties', proxyFor(PROPERTY_TARGETS, { '^/properties': '/' }));
-router.use('/users', proxyFor(USER_TARGETS, { '^/users': '/' }));
-router.use('/search', proxyFor(SEARCH_TARGETS, { '^/search': '/' }));
-router.use('/payments', proxyFor(PAYMENT_TARGETS, { '^/payments': '/' }));
+// Usamos router.all (no router.use) para que Express NO quite el prefijo
+// del req.url antes de llegar al proxy. Así los backends reciben el path
+// completo: /auth/login, /properties, /properties/:id, etc.
+const authProxy     = proxyFor(AUTH_TARGETS);
+const propertyProxy = proxyFor(PROPERTY_TARGETS);
+const userProxy     = proxyFor(USER_TARGETS);
+const searchProxy   = proxyFor(SEARCH_TARGETS);
+const paymentProxy  = proxyFor(PAYMENT_TARGETS);
+
+router.all('/auth',        authProxy);
+router.all('/auth/*',      authProxy);
+router.all('/properties',  propertyProxy);
+router.all('/properties/*', propertyProxy);
+router.all('/users',       userProxy);
+router.all('/users/*',     userProxy);
+router.all('/search',      searchProxy);
+router.all('/search/*',    searchProxy);
+router.all('/payments',    paymentProxy);
+router.all('/payments/*',  paymentProxy);
 
 export default router;

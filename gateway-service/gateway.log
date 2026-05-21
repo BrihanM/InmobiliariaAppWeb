@@ -1,0 +1,109 @@
+
+> gateway-service@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/main.ts
+
+[INFO] 00:16:11 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+{"level":30,"time":1779340572221,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+{"level":30,"time":1779340572222,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy rewrite rule created: \"^/auth\" ~> \"/\""}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://property-service:4100"}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy rewrite rule created: \"^/properties\" ~> \"/\""}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://user-service:4200"}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy rewrite rule created: \"^/users\" ~> \"/\""}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://search-service:4300"}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy rewrite rule created: \"^/search\" ~> \"/\""}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://payment-service:4400"}
+{"level":30,"time":1779340572223,"pid":4264,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy rewrite rule created: \"^/payments\" ~> \"/\""}
+{"level":30,"time":1779340572399,"pid":4264,"hostname":"DESKTOP-6QFS4ED","port":3000,"msg":"Gateway started"}
+::1 - - [21/May/2026:05:16:24 +0000] "GET /properties HTTP/1.1" 404 149 "-" "curl/8.19.0"
+::1 - - [21/May/2026:05:22:01 +0000] "GET /properties?page=1&limit=3 HTTP/1.1" 404 149 "-" "curl/8.19.0"
+::1 - - [21/May/2026:05:27:22 +0000] "GET /properties HTTP/1.1" 404 149 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+::1 - - [21/May/2026:05:27:23 +0000] "GET /properties HTTP/1.1" 404 149 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+::1 - - [21/May/2026:05:27:25 +0000] "GET /properties?status=available&limit=6&sort=price HTTP/1.1" 404 149 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+::1 - - [21/May/2026:05:27:25 +0000] "GET /properties?status=available&limit=8&page=1&sort=createdAt HTTP/1.1" 404 149 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+::1 - - [21/May/2026:05:27:26 +0000] "GET /properties?status=available&limit=6&sort=price HTTP/1.1" 404 149 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+::1 - - [21/May/2026:05:27:26 +0000] "GET /properties?status=available&limit=8&page=1&sort=createdAt HTTP/1.1" 404 149 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36"
+[INFO] 00:35:16 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts has been modified
+{"level":30,"time":1779341716969,"pid":6208,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at app.listen (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\express\lib\application.js:635:24)
+    at main (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:52:7)
+    at Object.<anonymous> (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:55:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1830:14)
+    at Module._compile (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Skoll\AppData\Local\Temp\ts-node-dev-hook-30397717587886186.js:69:33)
+    at node:internal/modules/cjs/loader:1961:10
+[ERROR] 00:35:17 Error: listen EADDRINUSE: address already in use :::3000
+[INFO] 00:35:36 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts has been modified
+{"level":30,"time":1779341736742,"pid":9256,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at app.listen (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\express\lib\application.js:635:24)
+    at main (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:52:7)
+    at Object.<anonymous> (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:55:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1830:14)
+    at Module._compile (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Skoll\AppData\Local\Temp\ts-node-dev-hook-30397717587886186.js:69:33)
+    at node:internal/modules/cjs/loader:1961:10
+[ERROR] 00:35:36 Error: listen EADDRINUSE: address already in use :::3000
+[INFO] 00:36:56 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\routes\proxy.ts has been modified
+{"level":30,"time":1779341817334,"pid":8704,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at app.listen (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\express\lib\application.js:635:24)
+    at main (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:52:7)
+    at Object.<anonymous> (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:55:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1830:14)
+    at Module._compile (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Skoll\AppData\Local\Temp\ts-node-dev-hook-30397717587886186.js:69:33)
+    at node:internal/modules/cjs/loader:1961:10
+[ERROR] 00:36:57 Error: listen EADDRINUSE: address already in use :::3000
+[INFO] 00:37:09 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\routes\proxy.ts has been modified
+{"level":30,"time":1779341830403,"pid":16828,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at app.listen (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\express\lib\application.js:635:24)
+    at main (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:52:7)
+    at Object.<anonymous> (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:55:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1830:14)
+    at Module._compile (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Skoll\AppData\Local\Temp\ts-node-dev-hook-30397717587886186.js:69:33)
+    at node:internal/modules/cjs/loader:1961:10
+[ERROR] 00:37:10 Error: listen EADDRINUSE: address already in use :::3000
+[INFO] 00:39:45 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\routes\proxy.ts has been modified
+{"level":30,"time":1779341985841,"pid":3164,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at app.listen (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\express\lib\application.js:635:24)
+    at main (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:52:7)
+    at Object.<anonymous> (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:55:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1830:14)
+    at Module._compile (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Skoll\AppData\Local\Temp\ts-node-dev-hook-30397717587886186.js:69:33)
+    at node:internal/modules/cjs/loader:1961:10
+[ERROR] 00:39:45 Error: listen EADDRINUSE: address already in use :::3000
+[INFO] 00:39:52 Restarting: C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\routes\proxy.ts has been modified
+{"level":30,"time":1779341992968,"pid":17392,"hostname":"DESKTOP-6QFS4ED","msg":"[HPM] Proxy created: /  -> http://auth-service:4000"}
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at app.listen (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\express\lib\application.js:635:24)
+    at main (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:52:7)
+    at Object.<anonymous> (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\src\main.ts:55:1)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1830:14)
+    at Module._compile (C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria\gateway-service\node_modules\source-map-support\source-map-support.js:568:25)
+    at Module.m._compile (C:\Users\Skoll\AppData\Local\Temp\ts-node-dev-hook-30397717587886186.js:69:33)
+    at node:internal/modules/cjs/loader:1961:10
+[ERROR] 00:39:53 Error: listen EADDRINUSE: address already in use :::3000
+^C
