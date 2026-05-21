@@ -1,9 +1,8 @@
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormValues } from '../schemas';
 import { useRegister } from '../hooks/useRegister';
 import { PasswordInput } from './PasswordInput';
-import { RoleSelector } from './RoleSelector';
 import { Input } from '@/shared/components/ui/Input';
 import { Button } from '@/shared/components/ui/Button';
 
@@ -12,13 +11,11 @@ export function RegisterForm() {
 
   const {
     register,
-    control,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { role: 'CLIENT' as const },
   });
 
   const passwordValue = watch('password') ?? '';
@@ -57,18 +54,6 @@ export function RegisterForm() {
         autoComplete="new-password"
         error={errors.confirmPassword?.message}
         {...register('confirmPassword')}
-      />
-
-      <Controller
-        name="role"
-        control={control}
-        render={({ field }) => (
-          <RoleSelector
-            value={field.value}
-            onChange={field.onChange}
-            error={errors.role?.message}
-          />
-        )}
       />
 
       {error && (

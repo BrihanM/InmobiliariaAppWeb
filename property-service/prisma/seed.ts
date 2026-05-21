@@ -257,10 +257,10 @@ const PROPERTIES: PropSeed[] = [
 async function main() {
   // 1. Tipos de propiedad
   const types = [
-    { id: TYPE_IDS.house,      name: "House" },
-    { id: TYPE_IDS.apartment,  name: "Apartment" },
-    { id: TYPE_IDS.land,       name: "Land" },
-    { id: TYPE_IDS.commercial, name: "Commercial" },
+    { id: TYPE_IDS.house,      name: "house" },
+    { id: TYPE_IDS.apartment,  name: "apartment" },
+    { id: TYPE_IDS.land,       name: "land" },
+    { id: TYPE_IDS.commercial, name: "commercial" },
   ];
   for (const t of types) {
     await prisma.property_types.upsert({ where: { name: t.name }, update: {}, create: t });
@@ -279,10 +279,10 @@ async function main() {
 
   // 3. Estados
   const statuses = [
-    { id: STATUS_IDS.available,   name: "AVAILABLE" },
-    { id: STATUS_IDS.sold,        name: "SOLD" },
-    { id: STATUS_IDS.rented,      name: "RENTED" },
-    { id: STATUS_IDS.unavailable, name: "UNAVAILABLE" },
+    { id: STATUS_IDS.available,   name: "available" },
+    { id: STATUS_IDS.sold,        name: "sold" },
+    { id: STATUS_IDS.rented,      name: "rented" },
+    { id: STATUS_IDS.unavailable, name: "unavailable" },
   ];
   for (const s of statuses) {
     await prisma.property_status.upsert({ where: { name: s.name }, update: {}, create: s });

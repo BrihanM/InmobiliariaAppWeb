@@ -13,7 +13,7 @@ const TYPE_LABELS: Record<Property['type'], string> = {
 const STATUS_CONFIG: Record<Property['status'], { label: string; dot: string }> = {
   available: { label: 'Disponible', dot: 'bg-emerald-400' },
   sold: { label: 'Vendido', dot: 'bg-red-400' },
-  rented: { label: 'Alquilado', dot: 'bg-blue-400' },
+  rented: { label: 'Alquilado', dot: 'bg-sky-400' },
 };
 
 const PLACEHOLDER =

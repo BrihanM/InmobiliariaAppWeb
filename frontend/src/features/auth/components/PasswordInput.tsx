@@ -22,7 +22,7 @@ const strengthColors = [
   '',
   'bg-red-400',
   'bg-yellow-400',
-  'bg-blue-400',
+  'bg-indigo-400',
   'bg-green-400',
 ];
 
@@ -30,7 +30,7 @@ const strengthTextColors = [
   '',
   'text-red-500',
   'text-yellow-600',
-  'text-blue-600',
+  'text-indigo-600',
   'text-green-600',
 ];
 
@@ -52,7 +52,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             className={`w-full rounded-xl border px-3 py-2 pr-11 text-sm outline-none transition-colors placeholder:text-gray-400 focus:ring-2 ${
               error
                 ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
+                : 'border-gray-200 focus:border-indigo-600 focus:ring-indigo-100'
             }`}
             {...props}
           />

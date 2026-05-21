@@ -24,7 +24,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Sidebar */}
       <aside className="w-60 bg-white border-r border-gray-100 flex flex-col">
         <div className="h-16 flex items-center px-6 border-b border-gray-100">
-          <Link to="/" className="text-lg font-bold text-blue-600">
+          <Link to="/" className="text-lg font-bold text-indigo-600">
             {env.appName}
           </Link>
         </div>
@@ -38,7 +38,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-blue-50 text-blue-600'
+                    ? 'bg-indigo-50 text-indigo-600'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`
               }

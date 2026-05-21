@@ -13,7 +13,7 @@ export function useRegister() {
         name: data.name,
         email: data.email,
         password: data.password,
-        role: data.role,
+        role: 'CLIENT',
       }),
     onSuccess: () => navigate('/dashboard'),
   });

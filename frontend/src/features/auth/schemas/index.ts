@@ -19,7 +19,6 @@ export const registerSchema = z
       .regex(/[0-9]/, 'Debe tener al menos un número')
       .regex(/[^a-zA-Z0-9]/, 'Debe tener un carácter especial'),
     confirmPassword: z.string().min(1, 'Confirma tu contraseña'),
-    role: z.enum(['ADMIN', 'AGENT', 'CLIENT']),
   })
   .refine((d) => d.password === d.confirmPassword, {
     message: 'Las contraseñas no coinciden',

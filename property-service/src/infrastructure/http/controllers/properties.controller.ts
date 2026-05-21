@@ -83,6 +83,7 @@ export const makePropertiesController = (deps: {
     if (req.query.city)    filter.city    = req.query.city    as string;
     if (req.query.minPrice) filter.minPrice = req.query.minPrice;
     if (req.query.maxPrice) filter.maxPrice = req.query.maxPrice;
+    if (req.query.sort)     filter.sort     = req.query.sort as string;
 
     const result = await deps.list.execute(filter, page, pageSize);
     const totalPages = Math.ceil(result.total / pageSize);

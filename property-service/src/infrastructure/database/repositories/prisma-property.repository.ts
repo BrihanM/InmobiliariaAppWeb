@@ -46,14 +46,22 @@ export class PrismaPropertyRepository implements IPropertyRepository {
   async list(filter: any, page: number, pageSize: number): Promise<{ items: any[]; total: number }> {
     const where: any = { deleted_at: null };
     if (filter.agentId) where.agent_id = filter.agentId;
-    if (filter.status) where.status = { name: filter.status };
-    if (filter.type) where.property_type = { name: filter.type };
+    if (filter.status) where.status = { name: { equals: filter.status, mode: 'insensitive' } };
+    if (filter.type) where.property_type = { name: { equals: filter.type, mode: 'insensitive' } };
     if (filter.city) where.address = { city: { contains: filter.city, mode: 'insensitive' } };
     if (filter.minPrice || filter.maxPrice) {
       where.price = {};
       if (filter.minPrice) where.price.gte = Number(filter.minPrice);
       if (filter.maxPrice) where.price.lte = Number(filter.maxPrice);
     }
+
+    const SORT_MAP: Record<string, any> = {
+      price_asc:  { price: 'asc' },
+      price_desc: { price: 'desc' },
+      area_desc:  { area: 'desc' },
+    };
+    const orderBy = (filter.sort && SORT_MAP[filter.sort]) ?? { created_at: 'desc' };
+
     const [items, total] = await Promise.all([
       prisma.properties.findMany({
         where,
@@ -65,7 +73,7 @@ export class PrismaPropertyRepository implements IPropertyRepository {
           address: true,
           images: { orderBy: { is_primary: 'desc' } },
         },
-        orderBy: { created_at: 'desc' },
+        orderBy,
       }),
       prisma.properties.count({ where }),
     ]);

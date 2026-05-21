@@ -18,19 +18,19 @@ export function MainLayout({ children }: MainLayoutProps) {
       {/* Navbar */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold text-blue-600">
+          <Link to="/" className="text-xl font-bold text-indigo-600">
             {env.appName}
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-            <Link to="/properties" className="hover:text-blue-600 transition-colors">
+            <Link to="/properties" className="hover:text-indigo-600 transition-colors">
               Propiedades
             </Link>
-            <Link to="/search" className="hover:text-blue-600 transition-colors">
+            <Link to="/search" className="hover:text-indigo-600 transition-colors">
               Buscar
             </Link>
             {(isAdmin || isAgent) && (
-              <Link to="/dashboard" className="hover:text-blue-600 transition-colors">
+              <Link to="/dashboard" className="hover:text-indigo-600 transition-colors">
                 Dashboard
               </Link>
             )}

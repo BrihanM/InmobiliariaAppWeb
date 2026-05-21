@@ -1,5 +1,35 @@
 @import "tailwindcss";
 
+/* ── Paleta de colores: café/amber sobre la escala "indigo" ── */
+@theme {
+  --color-indigo-50:  #fffbeb;
+  --color-indigo-100: #fef3c7;
+  --color-indigo-200: #fde68a;
+  --color-indigo-300: #fcd34d;
+  --color-indigo-400: #fbbf24;
+  --color-indigo-500: #f59e0b;
+  --color-indigo-600: #b45309;
+  --color-indigo-700: #92400e;
+  --color-indigo-800: #78350f;
+  --color-indigo-900: #451a03;
+  --color-indigo-950: #2c0f00;
+}
+
+/* ── Paleta principal: café/ámbar cálido ──────────────────────────────────── */
+@theme {
+  --color-indigo-50:  #fffbeb;
+  --color-indigo-100: #fef3c7;
+  --color-indigo-200: #fde68a;
+  --color-indigo-300: #fcd34d;
+  --color-indigo-400: #fbbf24;
+  --color-indigo-500: #f59e0b;
+  --color-indigo-600: #b45309;
+  --color-indigo-700: #92400e;
+  --color-indigo-800: #78350f;
+  --color-indigo-900: #451a03;
+  --color-indigo-950: #2c0f00;
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;

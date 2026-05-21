@@ -4,11 +4,11 @@ import { ForgotPasswordForm } from '../components/ForgotPasswordForm';
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-stone-900 to-slate-900 flex items-center justify-center p-4">
       <AuthCard>
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth={2}>
               <path
                 strokeLinecap="round"
@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
         <p className="mt-6 text-center text-sm text-gray-500">
           <Link
             to="/login"
-            className="font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+            className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline"
           >
             ← Volver al login
           </Link>

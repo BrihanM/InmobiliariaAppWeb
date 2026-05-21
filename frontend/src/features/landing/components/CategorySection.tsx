@@ -15,7 +15,7 @@ const CATEGORIES: Category[] = [
     label: 'Apartamentos',
     icon: '🏢',
     description: 'Vida moderna en la ciudad',
-    color: 'from-blue-50 to-indigo-50 border-blue-100 hover:border-blue-300',
+    color: 'from-amber-50 to-stone-50 border-amber-100 hover:border-amber-300',
   },
   {
     type: 'land',
