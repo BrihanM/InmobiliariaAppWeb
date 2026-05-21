@@ -144,14 +144,14 @@ export default function PropertyDetailsPage() {
 
                 {/* Contact CTA */}
                 <a
-                  href="mailto:info@inmobiliaria.mx"
+                  href="mailto:info@homelive.co"
                   className="block w-full text-center py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors text-sm mb-3"
                 >
                   Solicitar información
                 </a>
 
                 <a
-                  href="tel:+525500000000"
+                  href="tel:+576011234567"
                   className="block w-full text-center py-3 border-2 border-slate-200 text-slate-600 font-semibold rounded-xl hover:border-indigo-300 hover:text-indigo-600 transition-colors text-sm"
                 >
                   Llamar al agente

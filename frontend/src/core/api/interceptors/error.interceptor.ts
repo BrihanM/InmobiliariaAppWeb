@@ -23,11 +23,12 @@ export function attachErrorInterceptor(client: AxiosInstance): void {
         return Promise.reject(error);
       }
 
-      const { tokens, logout } = useAuthStore.getState();
+      const { tokens, isAuthenticated, logout } = useAuthStore.getState();
 
-      if (!tokens?.refreshToken) {
-        logout();
-        window.location.href = '/login';
+      // If the user was never authenticated, don't redirect — just let the
+      // request fail so public pages can handle the error gracefully.
+      if (!isAuthenticated || !tokens?.refreshToken) {
+        if (isAuthenticated) logout();
         return Promise.reject(error);
       }
 

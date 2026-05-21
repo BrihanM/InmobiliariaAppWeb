@@ -14,7 +14,7 @@ export default function RegisterPage() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Crear cuenta</h1>
-          <p className="mt-1 text-sm text-gray-500">Únete a la plataforma inmobiliaria</p>
+          <p className="mt-1 text-sm text-gray-500">Únete a HomeLive Inmuebles</p>
         </div>
 
         <RegisterForm />

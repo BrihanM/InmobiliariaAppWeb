@@ -88,8 +88,8 @@ export function Footer() {
               <span className="font-bold text-lg text-white">{env.appName}</span>
             </div>
             <p className="text-slate-400 leading-relaxed mb-6 max-w-xs">
-              La plataforma inmobiliaria de mayor confianza en Latinoamérica. Conectamos personas
-              con sus hogares ideales desde 2009.
+              La plataforma inmobiliaria de mayor confianza en Colombia. Conectamos personas
+              con sus hogares ideales desde 2019.
             </p>
             {/* Contact info */}
             <div className="space-y-2 text-sm">
@@ -97,13 +97,13 @@ export function Footer() {
                 <svg className="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                contacto@inmobiliaria.com
+                contacto@homelive.co
               </p>
               <p className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                +52 55 1234 5678
+                +57 601 234 5678
               </p>
             </div>
           </div>

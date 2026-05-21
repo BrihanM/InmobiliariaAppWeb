@@ -70,7 +70,7 @@ export function SearchFiltersPanel({
           <input
             id="search-city"
             type="text"
-            placeholder="Ej: Ciudad de México"
+            placeholder="Ej: Bogotá, Medellín, Cali..."
             value={city}
             onChange={(e) => onUpdate('city', e.target.value)}
             className={inputClass}

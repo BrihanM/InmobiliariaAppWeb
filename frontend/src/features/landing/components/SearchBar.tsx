@@ -113,7 +113,7 @@ export function SearchBar() {
 
       {/* Quick tags */}
       <div className="px-3 pb-3 flex flex-wrap gap-2">
-        {['Ciudad de México', 'Monterrey', 'Guadalajara', 'Bogotá', 'Buenos Aires'].map((city) => (
+        {['Bogotá', 'Medellín', 'Cali', 'Cartagena', 'Barranquilla', 'Santa Marta'].map((city) => (
           <button
             key={city}
             onClick={() => {

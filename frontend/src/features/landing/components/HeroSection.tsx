@@ -49,7 +49,7 @@ export function HeroSection() {
         <motion.div variants={itemVariants}>
           <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium px-5 py-2.5 rounded-full mb-8">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            La plataforma inmobiliaria #1 en Latinoamérica
+            La plataforma inmobiliaria #1 en Colombia
           </span>
         </motion.div>
 

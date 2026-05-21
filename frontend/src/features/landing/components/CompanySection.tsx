@@ -67,9 +67,9 @@ export function CompanySection() {
               <span className="block text-indigo-600">con sus hogares ideales</span>
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed mb-8">
-              Somos la plataforma inmobiliaria de mayor confianza en Latinoamérica. Desde 2009
+              Somos la plataforma inmobiliaria de mayor confianza en Colombia. Desde 2019
               hemos ayudado a miles de familias y empresas a encontrar el espacio perfecto para
-              vivir y crecer.
+              vivir y crecer en territorio colombiano.
             </p>
 
             {/* Features */}

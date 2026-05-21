@@ -1,6 +1,167 @@
-**Resumen**
+# HOME LIVE MANAGER — HomeLive Inmuebles
 
-Este repositorio contiene una arquitectura de microservicios Node.js + TypeScript con una base de datos PostgreSQL y un API Gateway. El siguiente documento explica cómo preparar el entorno, construir y desplegar todo con Docker Compose en Windows (PowerShell), incluyendo migraciones Prisma y comprobaciones básicas.
+## Descripción del proyecto
+
+**HOME LIVE MANAGER** es la plataforma de software desarrollada para **HomeLive Inmuebles**, diseñada para centralizar y optimizar la gestión de ventas, alquileres y administración de propiedades en Colombia.
+
+### Problema que resuelve
+
+HomeLive Inmuebles carecía de un sistema totalmente integrado, lo que generaba desorganización, demoras y dificultades en el seguimiento de clientes y en el control de la disponibilidad de inmuebles.
+
+### Solución
+
+Una plataforma digital segura y confiable donde:
+- Los **clientes** acceden a propiedades, las buscan y filtran, y realizan reservas o pagos en línea.
+- Los **agentes** gestionan su portafolio de inmuebles, crean y actualizan propiedades.
+- Los **administradores** tienen control total de usuarios, propiedades y operaciones.
+
+---
+
+## Arquitectura
+
+Microservicios Node.js + TypeScript · API Gateway · PostgreSQL · React Frontend
+
+```
+┌─────────────┐    ┌──────────────────────────────────────────────┐
+│   Frontend  │───▶│          API Gateway  :3000                  │
+│  React/Vite │    └──┬───────────┬────────────┬──────────────────┘
+└─────────────┘       │           │            │
+               ┌──────▼──┐  ┌─────▼───┐  ┌────▼──────────┐
+               │  auth   │  │property │  │   payment     │
+               │ :4000   │  │ :4100   │  │   :4300       │
+               └──────┬──┘  └─────┬───┘  └────┬──────────┘
+                      └───────────┴────────────┘
+                                  │
+                          ┌───────▼───────┐
+                          │  PostgreSQL   │
+                          │  :5432        │
+                          └───────────────┘
+```
+
+---
+
+## Prerequisitos
+
+- Docker Desktop (con Docker Compose integrado)
+- Node.js 20+ (solo para tareas locales)
+
+---
+
+## Puesta en marcha (primera vez)
+
+### 1. Copiar variables de entorno
+
+```powershell
+cd C:\Users\Skoll\OneDrive\Desktop\Inmobiliaria
+Get-ChildItem -Recurse -Filter ".env.example" | ForEach-Object {
+  Copy-Item $_.FullName -Destination (Join-Path $_.DirectoryName ".env") -Force
+}
+```
+
+Edita los `.env` con tus claves reales: `JWT_SECRET`, `STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET`.
+
+### 2. Levantar servicios con Docker
+
+```powershell
+docker compose up -d --build
+```
+
+### 3. Aplicar migraciones (solo la primera vez)
+
+```bash
+# auth-service
+cd auth-service
+npx prisma migrate deploy
+
+# property-service
+cd ../property-service
+npx prisma migrate deploy
+```
+
+### 4. Poblar la base de datos con datos iniciales
+
+```bash
+# Usuarios: admin, agente, cliente
+cd auth-service && npm run seed
+
+# 20 propiedades colombianas
+cd ../property-service && npm run seed
+```
+
+Credenciales creadas:
+
+| Email                      | Contraseña   | Rol    |
+|----------------------------|--------------|--------|
+| admin@inmobiliaria.co      | Admin123!    | ADMIN  |
+| agente@inmobiliaria.co     | Agente123!   | AGENT  |
+| cliente@inmobiliaria.co    | Cliente123!  | CLIENT |
+
+### 5. Arrancar el frontend
+
+Ver `frontend/README.md`.
+
+---
+
+## Desarrollo diario
+
+```powershell
+# Backend (ya corriendo con Docker)
+docker compose up -d
+
+# Frontend
+cd frontend && npm run dev
+```
+
+---
+
+## Verificar estado y logs
+
+```powershell
+docker compose ps
+docker compose logs -f api-gateway
+docker compose logs -f auth-service
+docker compose logs -f property-service
+```
+
+Endpoints de salud:
+
+```powershell
+curl http://localhost:3000/health
+curl http://localhost:3000/auth/health
+```
+
+---
+
+## pgAdmin
+
+Disponible en `http://localhost:5050`  
+Usuario/clave por defecto (si no cambiaste `.env`): `admin@example.com` / `admin`
+
+---
+
+## Recrear la base de datos desde cero (dev)
+
+```powershell
+docker compose down
+docker volume rm pgdata pgadmin
+docker compose up -d
+```
+
+> ⚠️ Borra todos los datos persistentes.
+
+---
+
+## Problemas comunes
+
+**Prisma falla por falta de OpenSSL:**  
+Los Dockerfiles de servicios Prisma instalan `openssl`. Si persiste, rebuild:
+```powershell
+docker compose build --no-cache auth-service property-service payment-service
+docker compose up -d
+```
+
+**`Cannot find module '@prisma/client'`:**  
+Asegurarse de que `@prisma/client` está en `dependencies` (no `devDependencies`) y rebuild.
 
 **Prerequisitos**
 

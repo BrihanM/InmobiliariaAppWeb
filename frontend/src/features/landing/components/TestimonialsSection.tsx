@@ -5,7 +5,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
     name: 'María González',
-    role: 'Compradora, Ciudad de México',
+    role: 'Compradora, Bogotá',
     content:
       'Encontré el apartamento perfecto en menos de 2 semanas. El proceso fue completamente transparente y el agente nos guió en cada paso. ¡100% recomendado!',
     rating: 5,
@@ -15,7 +15,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     id: '2',
     name: 'Carlos Mendoza',
-    role: 'Inversionista, Monterrey',
+    role: 'Inversionista, Medellín',
     content:
       'Llevo 3 años usando la plataforma para gestionar mis propiedades de inversión. La herramienta es intuitiva y el equipo de soporte siempre responde rápido.',
     rating: 5,

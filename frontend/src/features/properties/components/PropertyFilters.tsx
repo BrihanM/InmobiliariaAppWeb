@@ -77,7 +77,7 @@ export function PropertyFilters({
           <input
             id="filter-city"
             type="text"
-            placeholder="Ej: Ciudad de México"
+            placeholder="Ej: Bogotá, Medellín, Cali..."
             value={values.city}
             onChange={(e) => onChange('city', e.target.value)}
             className={inputClass}

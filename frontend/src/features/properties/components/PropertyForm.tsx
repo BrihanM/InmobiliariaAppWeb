@@ -21,9 +21,8 @@ const sectionTitle = 'font-semibold text-slate-800 mb-4 flex items-center gap-2 
 type SelectOption = { value: string; label: string };
 
 const CURRENCIES: SelectOption[] = [
-  { value: 'MXN', label: 'Peso Mexicano (MXN)' },
+  { value: 'COP', label: 'Peso Colombiano (COP)' },
   { value: 'USD', label: 'Dólar (USD)' },
-  { value: 'EUR', label: 'Euro (EUR)' },
 ];
 
 const PROPERTY_TYPES: SelectOption[] = [
@@ -54,13 +53,13 @@ export function PropertyForm({ defaultValues, onSubmit, isLoading, isEdit = fals
       title: '',
       description: '',
       price: 0,
-      currency: 'MXN',
+      currency: 'COP',
       type: 'house',
       status: 'available',
       address: '',
       city: '',
       state: '',
-      country: 'México',
+      country: 'Colombia',
       bedrooms: 0,
       bathrooms: 0,
       area: 0,
@@ -197,17 +196,17 @@ export function PropertyForm({ defaultValues, onSubmit, isLoading, isEdit = fals
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label htmlFor="city" className={labelClass}>Ciudad *</label>
-            <input id="city" type="text" placeholder="Ciudad de México" className={inputClass} {...register('city')} />
+            <input id="city" type="text" placeholder="Bogotá, Medellín, Cali..." className={inputClass} {...register('city')} />
             {errors.city && <p className={errorClass}>{errors.city.message}</p>}
           </div>
           <div>
             <label htmlFor="state" className={labelClass}>Estado *</label>
-            <input id="state" type="text" placeholder="CDMX" className={inputClass} {...register('state')} />
+            <input id="state" type="text" placeholder="Cundinamarca, Antioquia..." className={inputClass} {...register('state')} />
             {errors.state && <p className={errorClass}>{errors.state.message}</p>}
           </div>
           <div>
             <label htmlFor="country" className={labelClass}>País *</label>
-            <input id="country" type="text" placeholder="México" className={inputClass} {...register('country')} />
+            <input id="country" type="text" placeholder="Colombia" className={inputClass} {...register('country')} />
             {errors.country && <p className={errorClass}>{errors.country.message}</p>}
           </div>
         </div>
