@@ -1,5 +1,5 @@
 import { apiClient } from '@/core/api/axios.instance';
-import type { Property } from '@/features/properties/domain/entities/Property.entity';
+import type { Property } from '@/features/properties/types';
 import type { PaginatedResponse } from '@/shared/types/common.types';
 
 export interface PropertyQuery {

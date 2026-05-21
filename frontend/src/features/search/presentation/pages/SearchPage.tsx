@@ -1,7 +1,8 @@
 import { MainLayout } from '@/shared/components/layouts/MainLayout';
 import { useDebounce } from '@/shared/hooks/useDebounce';
-import { useProperties } from '@/features/properties/presentation/hooks/useProperties';
-import { PropertyCard } from '@/features/properties/presentation/components/PropertyCard';
+import { useProperties } from '@/features/properties/hooks/useProperties';
+import { PropertyCard } from '@/features/properties/components/PropertyCard';
+import type { Property } from '@/features/properties/types';
 import { Spinner } from '@/shared/components/ui/Spinner';
 import { Input } from '@/shared/components/ui/Input';
 import { useState } from 'react';
@@ -32,7 +33,7 @@ export default function SearchPage() {
 
         {data && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.data.map((p) => (
+            {data.data.map((p: Property) => (
               <PropertyCard key={p.id} property={p} />
             ))}
             {data.data.length === 0 && (

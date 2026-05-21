@@ -8,7 +8,10 @@ const LandingPage = lazy(() => import('@/features/landing/pages/LandingPage'));
 const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'));
 const RegisterPage = lazy(() => import('@/features/auth/pages/RegisterPage'));
 const ForgotPasswordPage = lazy(() => import('@/features/auth/pages/ForgotPasswordPage'));
-const PropertiesPage = lazy(() => import('@/features/properties/presentation/pages/PropertiesPage'));
+const PropertiesPage = lazy(() => import('@/features/properties/pages/PropertiesPage'));
+const PropertyDetailsPage = lazy(() => import('@/features/properties/pages/PropertyDetailsPage'));
+const CreatePropertyPage = lazy(() => import('@/features/properties/pages/CreatePropertyPage'));
+const EditPropertyPage = lazy(() => import('@/features/properties/pages/EditPropertyPage'));
 const DashboardPage = lazy(() => import('@/features/dashboard/presentation/pages/DashboardPage'));
 const SearchPage = lazy(() => import('@/features/search/presentation/pages/SearchPage'));
 const NotFoundPage = lazy(() => import('@/shared/components/pages/NotFoundPage'));
@@ -26,6 +29,7 @@ export const router = createBrowserRouter([
   { path: '/register', element: <Suspense fallback={loader}><RegisterPage /></Suspense> },
   { path: '/forgot-password', element: <Suspense fallback={loader}><ForgotPasswordPage /></Suspense> },
   { path: '/properties', element: <Suspense fallback={loader}><PropertiesPage /></Suspense> },
+  { path: '/properties/:id', element: <Suspense fallback={loader}><PropertyDetailsPage /></Suspense> },
   { path: '/search', element: <Suspense fallback={loader}><SearchPage /></Suspense> },
 
   // Protected routes
@@ -36,6 +40,8 @@ export const router = createBrowserRouter([
         element: <RoleGuard allowedRoles={['ADMIN', 'AGENT']} />,
         children: [
           { path: '/dashboard', element: <Suspense fallback={loader}><DashboardPage /></Suspense> },
+          { path: '/properties/create', element: <Suspense fallback={loader}><CreatePropertyPage /></Suspense> },
+          { path: '/properties/:id/edit', element: <Suspense fallback={loader}><EditPropertyPage /></Suspense> },
         ],
       },
     ],

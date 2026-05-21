@@ -1,4 +1,4 @@
-export type { Property } from '@/features/properties/domain/entities/Property.entity';
+export type { Property } from '@/features/properties/types';
 
 export type PropertyType = 'house' | 'apartment' | 'land' | 'commercial';
 export type PropertyStatus = 'available' | 'sold' | 'rented';
