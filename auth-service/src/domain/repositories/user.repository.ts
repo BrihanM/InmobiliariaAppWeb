@@ -4,4 +4,5 @@ export interface IUserRepository {
   create(user: Omit<User, "createdAt" | "updatedAt" | "deletedAt">): Promise<User>;
   findByEmail(email: string): Promise<User | null>;
   findById(id: string): Promise<User | null>;
+  assignRole(userId: string, roleId: string): Promise<void>;
 }

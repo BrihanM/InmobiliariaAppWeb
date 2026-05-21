@@ -1,59 +1,65 @@
 import { IUserRepository } from "../../../domain/repositories/user.repository";
 import { prisma } from "../prismaClient";
 import { User } from "../../../domain/entities/user.entity";
+import { randomUUID } from "crypto";
+
+const INCLUDE_ROLES = { roles: { include: { role: true } } } as const;
+
+function toUser(raw: any): User {
+  const role = raw.roles?.[0]?.role?.name ?? undefined;
+  return new User({
+    id: raw.id,
+    firstName: raw.first_name,
+    lastName: raw.last_name,
+    email: raw.email,
+    phone: raw.phone,
+    passwordHash: raw.password_hash,
+    status: raw.status,
+    role,
+    createdAt: raw.created_at,
+    updatedAt: raw.updated_at,
+    deletedAt: raw.deleted_at,
+  });
+}
 
 export class PrismaUserRepository implements IUserRepository {
-  /**
-   * Repositorio Prisma para la entidad `User`.
-   * Encapsula las operaciones CRUD necesarias por la capa de dominio.
-   */
   async create(user: any): Promise<User> {
-    const created = await prisma.users.create({ data: { ...user } });
-    return new User({
-      id: created.id,
-      firstName: created.first_name,
-      lastName: created.last_name,
-      email: created.email,
-      phone: created.phone,
-      passwordHash: created.password_hash,
-      status: created.status,
-      createdAt: created.created_at,
-      updatedAt: created.updated_at,
-      deletedAt: created.deleted_at
+    const created = await prisma.users.create({
+      data: {
+        id: user.id,
+        first_name: user.firstName,
+        last_name: user.lastName,
+        email: user.email,
+        phone: user.phone ?? null,
+        password_hash: user.passwordHash,
+        status: user.status ?? 'active',
+      },
+      include: INCLUDE_ROLES,
     });
+    return toUser(created);
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    const found = await prisma.users.findUnique({ where: { email } });
-    if (!found) return null;
-    return new User({
-      id: found.id,
-      firstName: found.first_name,
-      lastName: found.last_name,
-      email: found.email,
-      phone: found.phone,
-      passwordHash: found.password_hash,
-      status: found.status,
-      createdAt: found.created_at,
-      updatedAt: found.updated_at,
-      deletedAt: found.deleted_at
+    const found = await prisma.users.findUnique({
+      where: { email },
+      include: INCLUDE_ROLES,
     });
+    if (!found) return null;
+    return toUser(found);
   }
 
   async findById(id: string): Promise<User | null> {
-    const found = await prisma.users.findUnique({ where: { id } });
+    const found = await prisma.users.findUnique({
+      where: { id },
+      include: INCLUDE_ROLES,
+    });
     if (!found) return null;
-    return new User({
-      id: found.id,
-      firstName: found.first_name,
-      lastName: found.last_name,
-      email: found.email,
-      phone: found.phone,
-      passwordHash: found.password_hash,
-      status: found.status,
-      createdAt: found.created_at,
-      updatedAt: found.updated_at,
-      deletedAt: found.deleted_at
+    return toUser(found);
+  }
+
+  async assignRole(userId: string, roleId: string): Promise<void> {
+    await prisma.user_roles.create({
+      data: { id: randomUUID(), user_id: userId, role_id: roleId },
     });
   }
 }

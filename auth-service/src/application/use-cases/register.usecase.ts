@@ -40,7 +40,8 @@ export class RegisterUseCase {
     // Assign default role CLIENT
     const role = await this.roleRepo.findByName("CLIENT");
     if (role) {
-      // role assignment handled at repository layer (infrastructure)
+      await this.userRepo.assignRole(user.id, role.id);
+      user.role = role.name;
     }
 
     return user;

@@ -24,7 +24,14 @@ const loginUC = new LoginUseCase(userRepo, hashProvider, jwtProvider, refreshRep
 const refreshUC = new RefreshUseCase(refreshRepo, jwtProvider);
 const logoutUC = new LogoutUseCase(refreshRepo);
 
-const controller = makeAuthController({ register: registerUC, login: loginUC, refresh: refreshUC, logout: logoutUC });
+const controller = makeAuthController({
+  register: registerUC,
+  login: loginUC,
+  refresh: refreshUC,
+  logout: logoutUC,
+  jwtProvider,
+  refreshRepo,
+});
 
 router.post("/register", controller.register);
 router.post("/login", controller.login);

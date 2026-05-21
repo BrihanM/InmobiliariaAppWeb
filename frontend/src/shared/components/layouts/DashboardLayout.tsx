@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSession } from '@/features/auth/hooks/useSession';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { env } from '@/core/config/env';
@@ -18,6 +18,7 @@ const navLinks = [
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user } = useSession();
   const { logout, isLoading: isLoggingOut } = useLogout();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex bg-gray-50">
@@ -51,8 +52,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* User footer */}
         <div className="p-4 border-t border-gray-100">
-          <p className="text-sm font-medium text-gray-800 truncate">{user?.name}</p>
-          <p className="text-xs text-gray-400 truncate mb-3">{user?.email}</p>
+          <button
+            onClick={() => navigate('/profile')}
+            className="w-full text-left mb-2 hover:bg-gray-50 rounded-xl px-2 py-1.5 transition-colors"
+          >
+            <p className="text-sm font-medium text-gray-800 truncate">{user?.name}</p>
+            <p className="text-xs text-gray-400 truncate">{user?.email}</p>
+          </button>
           <button
             onClick={logout}
             disabled={isLoggingOut}

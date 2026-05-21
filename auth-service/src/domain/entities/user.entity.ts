@@ -6,6 +6,7 @@ export type UserProps = {
   phone?: string | null;
   passwordHash: string;
   status?: string;
+  role?: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
@@ -25,6 +26,7 @@ export class User {
   phone?: string | null;
   passwordHash: string;
   status: string;
+  role?: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
@@ -37,6 +39,7 @@ export class User {
     this.phone = props.phone ?? null;
     this.passwordHash = props.passwordHash;
     this.status = props.status ?? "active";
+    this.role = props.role;
     this.createdAt = props.createdAt ?? new Date();
     this.updatedAt = props.updatedAt ?? new Date();
     this.deletedAt = props.deletedAt ?? null;

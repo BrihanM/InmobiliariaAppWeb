@@ -19,6 +19,13 @@ const PaymentSuccessPage = lazy(() => import('@/features/payments/pages/PaymentS
 const PaymentHistoryPage = lazy(() => import('@/features/payments/pages/PaymentHistoryPage'));
 const NotFoundPage = lazy(() => import('@/shared/components/pages/NotFoundPage'));
 
+// Users feature
+const UsersPage = lazy(() => import('@/features/users/pages/UsersPage'));
+const UserDetailsPage = lazy(() => import('@/features/users/pages/UserDetailsPage'));
+const EditUserPage = lazy(() => import('@/features/users/pages/EditUserPage'));
+const CreateAgentPage = lazy(() => import('@/features/users/pages/CreateAgentPage'));
+const ProfilePage = lazy(() => import('@/features/users/pages/ProfilePage'));
+
 const loader = (
   <div className="min-h-screen flex items-center justify-center">
     <Spinner size="lg" />
@@ -43,12 +50,24 @@ export const router = createBrowserRouter([
       { path: '/checkout', element: <Suspense fallback={loader}><CheckoutPage /></Suspense> },
       { path: '/payment/success', element: <Suspense fallback={loader}><PaymentSuccessPage /></Suspense> },
       { path: '/payment/history', element: <Suspense fallback={loader}><PaymentHistoryPage /></Suspense> },
+      { path: '/profile', element: <Suspense fallback={loader}><ProfilePage /></Suspense> },
       {
         element: <RoleGuard allowedRoles={['ADMIN', 'AGENT']} />,
         children: [
           { path: '/dashboard', element: <Suspense fallback={loader}><DashboardPage /></Suspense> },
           { path: '/properties/create', element: <Suspense fallback={loader}><CreatePropertyPage /></Suspense> },
           { path: '/properties/:id/edit', element: <Suspense fallback={loader}><EditPropertyPage /></Suspense> },
+          // Profile — any authenticated agent/admin
+          { path: '/dashboard/profile', element: <Suspense fallback={loader}><ProfilePage /></Suspense> },
+        ],
+      },
+      {
+        element: <RoleGuard allowedRoles={['ADMIN']} />,
+        children: [
+          { path: '/dashboard/users', element: <Suspense fallback={loader}><UsersPage /></Suspense> },
+          { path: '/dashboard/users/new-agent', element: <Suspense fallback={loader}><CreateAgentPage /></Suspense> },
+          { path: '/dashboard/users/:id', element: <Suspense fallback={loader}><UserDetailsPage /></Suspense> },
+          { path: '/dashboard/users/:id/edit', element: <Suspense fallback={loader}><EditUserPage /></Suspense> },
         ],
       },
     ],

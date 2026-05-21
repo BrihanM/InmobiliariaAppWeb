@@ -21,9 +21,9 @@ export const rbac = (allowed: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     if (!user) return res.status(403).json({ message: 'Forbidden' });
-    const roles: string[] = user.roles ?? [];
-    const ok = roles.some(r => allowed.includes(r));
-    if (!ok) return res.status(403).json({ message: 'Forbidden' });
+    // JWT payload carries `role` (singular string) set by auth-service
+    const role: string = user.role ?? '';
+    if (!allowed.includes(role)) return res.status(403).json({ message: 'Forbidden' });
     next();
   };
 };

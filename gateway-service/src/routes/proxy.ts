@@ -35,8 +35,15 @@ function proxyFor(targets: string[], pathRewrite?: Record<string, string>) {
     }),
     router: () => getTarget(),
     pathRewrite: pathRewrite,
-    onProxyReq: (proxyReq) => {
+    onProxyReq: (proxyReq, req) => {
       proxyReq.setHeader('x-forwarded-host', 'gateway');
+      // bodyParser already consumed the stream — re-write parsed body so upstream receives it
+      if ((req as any).body && Object.keys((req as any).body).length > 0) {
+        const bodyData = JSON.stringify((req as any).body);
+        proxyReq.setHeader('Content-Type', 'application/json');
+        proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+        proxyReq.write(bodyData);
+      }
     },
   };
   return createProxyMiddleware(options);
