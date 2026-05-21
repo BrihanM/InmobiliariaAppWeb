@@ -13,7 +13,7 @@ const PropertyDetailsPage = lazy(() => import('@/features/properties/pages/Prope
 const CreatePropertyPage = lazy(() => import('@/features/properties/pages/CreatePropertyPage'));
 const EditPropertyPage = lazy(() => import('@/features/properties/pages/EditPropertyPage'));
 const DashboardPage = lazy(() => import('@/features/dashboard/presentation/pages/DashboardPage'));
-const SearchPage = lazy(() => import('@/features/search/presentation/pages/SearchPage'));
+const SearchPage = lazy(() => import('@/features/search/pages/SearchPage'));
 const NotFoundPage = lazy(() => import('@/shared/components/pages/NotFoundPage'));
 
 const loader = (
