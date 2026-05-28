@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { DashboardLayout } from '@/shared/components/layouts/DashboardLayout';
+import { MainLayout } from '@/shared/components/layouts/MainLayout';
 import { Button } from '@/shared/components/ui/Button';
 import { UserForm } from '../components/UserForm';
 import { UserRoleBadge } from '../components/UserRoleBadge';
@@ -10,36 +11,58 @@ import { useUpdateUser } from '../hooks/useUpdateUser';
 import { useSession } from '@/features/auth/hooks/useSession';
 import { getUserFullName, getUserInitials, getUserStatus, buildAvatarColor, formatDate } from '../utils/userHelpers';
 import { Spinner } from '@/shared/components/ui/Spinner';
-import type { UserRole } from '../types';
+import type { BackendUser, UserRole } from '../types';
 import type { UpdateUserFormValues } from '../schemas';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user: authUser } = useSession();
-  const { data: user, isLoading } = useUser(authUser?.id ?? null);
+  const { user: authUser, isClient } = useSession();
+  const { data: apiUser, isLoading } = useUser(authUser?.id ?? null);
   const { mutateAsync: updateUser, isPending, isSuccess } = useUpdateUser();
+
+  // Build a fallback user from the auth-store data so the page never hangs
+  // waiting for the user-service when it isn't accessible.
+  const authFallback: BackendUser | null = authUser
+    ? {
+        id: authUser.id,
+        email: authUser.email,
+        firstName: authUser.name.split(' ')[0] ?? authUser.name,
+        lastName: authUser.name.split(' ').slice(1).join(' '),
+        role: authUser.role,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    : null;
+
+  const user = apiUser ?? authFallback;
 
   async function handleSubmit(values: UpdateUserFormValues) {
     if (!authUser?.id) return;
     await updateUser({ id: authUser.id, payload: values });
   }
 
-  if (isLoading || !user) {
+  const Layout = isClient ? MainLayout : DashboardLayout;
+
+  // Only show spinner when actually loading AND no fallback user exists
+  if (isLoading && !user) {
     return (
-      <DashboardLayout>
+      <Layout>
         <div className="flex items-center justify-center h-64">
           <Spinner size="lg" />
         </div>
-      </DashboardLayout>
+      </Layout>
     );
   }
+
+  if (!user) return null;
 
   const status = getUserStatus(user);
   const initials = getUserInitials(user);
   const avatarBg = buildAvatarColor(user.id);
 
   return (
-    <DashboardLayout>
+    <Layout>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -101,6 +124,6 @@ export default function ProfilePage() {
           </Button>
         </div>
       </motion.div>
-    </DashboardLayout>
+    </Layout>
   );
 }

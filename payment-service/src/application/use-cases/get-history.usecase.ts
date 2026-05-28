@@ -1,13 +1,12 @@
-import { PaymentRepository } from '../../domain/repositories/payment.repository.interface';
+import { PaymentRepository, PaymentFilters } from '../../domain/repositories/payment.repository.interface';
 
 /**
- * Caso de uso: obtener historial de cambios de estado de pagos
- * para un usuario.
+ * Caso de uso: obtener pagos paginados de un usuario (o todos si es ADMIN).
  */
 export class GetHistoryUseCase {
   constructor(private repo: PaymentRepository) {}
 
-  async execute(userId: string) {
-    return this.repo.findHistoryByUser(userId);
+  async execute(userId: string, role: string, filters: PaymentFilters) {
+    return this.repo.findPaginated(userId, role, filters);
   }
 }

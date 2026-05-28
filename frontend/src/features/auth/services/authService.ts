@@ -16,8 +16,9 @@ export const authService = {
   },
 
   async logout() {
+    const { tokens } = useAuthStore.getState();
     try {
-      await authApi.logout();
+      await authApi.logout(tokens?.refreshToken ?? undefined);
     } finally {
       useAuthStore.getState().logout();
     }

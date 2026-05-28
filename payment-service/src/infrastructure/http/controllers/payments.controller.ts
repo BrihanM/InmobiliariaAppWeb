@@ -2,17 +2,9 @@ import { Request, Response } from 'express';
 import { RegisterPaymentUseCase } from '../../../application/use-cases/register-payment.usecase';
 import { GetHistoryUseCase } from '../../../application/use-cases/get-history.usecase';
 
-/**
- * Controlador HTTP para operaciones de pagos.
- * Expone métodos que delegan en los casos de uso correspondientes.
- */
 export class PaymentsController {
   constructor(private registerUC: RegisterPaymentUseCase, private historyUC: GetHistoryUseCase) {}
 
-  /**
-   * Registra un nuevo pago y devuelve el `clientSecret` de Stripe
-   * junto con la entidad `payment` creada en la base de datos.
-   */
   async register(req: Request, res: Response) {
     const dto = req.body;
     const result = await this.registerUC.execute(dto);
@@ -20,12 +12,25 @@ export class PaymentsController {
   }
 
   /**
-   * Devuelve el historial de transacciones (cambios de estado)
-   * para los pagos asociados a un usuario.
+   * GET /payments/history
+   * userId comes from the x-user-id header injected by the gateway.
+   * Supports query params: status, page, limit.
    */
   async history(req: Request, res: Response) {
-    const userId = String(req.query.userId || req.body.userId);
-    const data = await this.historyUC.execute(userId);
+    const userId = String(req.headers['x-user-id'] || req.query.userId || '');
+    const role   = String(req.headers['x-user-role'] || 'CLIENT');
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const filters = {
+      status: req.query.status ? String(req.query.status) : undefined,
+      page:   req.query.page   ? Number(req.query.page)   : 1,
+      limit:  req.query.limit  ? Number(req.query.limit)  : 10,
+    };
+
+    const data = await this.historyUC.execute(userId, role, filters);
     return res.json(data);
   }
 }

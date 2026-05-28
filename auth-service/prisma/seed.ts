@@ -4,9 +4,12 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 // Fixed IDs so re-runs are idempotent
-const ADMIN_ID  = "11111111-1111-1111-1111-111111111111";
-const AGENT_ID  = "22222222-2222-2222-2222-222222222222";
-const CLIENT_ID = "33333333-3333-3333-3333-333333333333";
+const ADMIN_ID    = "11111111-1111-1111-1111-111111111111";
+const AGENT_ID    = "22222222-2222-2222-2222-222222222222";
+const AGENT_2_ID  = "22222222-2222-2222-2222-222222222223";
+const CLIENT_ID   = "33333333-3333-3333-3333-333333333333";
+const CLIENT_2_ID = "33333333-3333-3333-3333-333333333334";
+const CLIENT_3_ID = "33333333-3333-3333-3333-333333333335";
 
 const ROLE_IDS = {
   ADMIN:  "44444444-4444-4444-4444-444444444444",
@@ -47,11 +50,35 @@ async function main() {
       roleId: ROLE_IDS.AGENT,
     },
     {
+      id: AGENT_2_ID,
+      first_name: "Sandra",
+      last_name: "López",
+      email: "sandra@inmobiliaria.co",
+      password: "Sandra123!",
+      roleId: ROLE_IDS.AGENT,
+    },
+    {
       id: CLIENT_ID,
       first_name: "María",
       last_name: "Gómez",
       email: "cliente@inmobiliaria.co",
       password: "Cliente123!",
+      roleId: ROLE_IDS.CLIENT,
+    },
+    {
+      id: CLIENT_2_ID,
+      first_name: "Juan",
+      last_name: "Pérez",
+      email: "juan@inmobiliaria.co",
+      password: "Juan123!",
+      roleId: ROLE_IDS.CLIENT,
+    },
+    {
+      id: CLIENT_3_ID,
+      first_name: "Laura",
+      last_name: "Torres",
+      email: "laura@inmobiliaria.co",
+      password: "Laura123!",
       roleId: ROLE_IDS.CLIENT,
     },
   ];
@@ -81,10 +108,14 @@ async function main() {
   console.log("✅ Usuarios creados:");
   console.log("   admin@inmobiliaria.co    → Admin123!   (ADMIN)");
   console.log("   agente@inmobiliaria.co   → Agente123!  (AGENT)");
+  console.log("   sandra@inmobiliaria.co   → Sandra123!  (AGENT)");
   console.log("   cliente@inmobiliaria.co  → Cliente123! (CLIENT)");
+  console.log("   juan@inmobiliaria.co     → Juan123!    (CLIENT)");
+  console.log("   laura@inmobiliaria.co    → Laura123!   (CLIENT)");
 }
 
 main()
   .catch((e) => { console.error(e); process.exit(1); })
   .finally(async () => await prisma.$disconnect());
+
 

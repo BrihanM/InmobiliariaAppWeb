@@ -37,6 +37,10 @@ function proxyFor(targets: string[], pathRewrite?: Record<string, string>) {
     pathRewrite: pathRewrite,
     onProxyReq: (proxyReq, req) => {
       proxyReq.setHeader('x-forwarded-host', 'gateway');
+      // Forward decoded JWT claims so microservices don't need to re-validate JWT
+      const user = (req as any).user;
+      if (user?.sub)  proxyReq.setHeader('x-user-id',   String(user.sub));
+      if (user?.role) proxyReq.setHeader('x-user-role', String(user.role));
       // bodyParser already consumed the stream — re-write parsed body so upstream receives it
       if ((req as any).body && Object.keys((req as any).body).length > 0) {
         const bodyData = JSON.stringify((req as any).body);

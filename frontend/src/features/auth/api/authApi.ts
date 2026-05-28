@@ -15,8 +15,8 @@ export const authApi = {
   register: (data: RegisterRequest): Promise<AuthResponse> =>
     apiClient.post<AuthResponse>('/auth/register', data).then((r) => r.data),
 
-  logout: (): Promise<void> =>
-    apiClient.post('/auth/logout').then(() => undefined),
+  logout: (refreshToken?: string): Promise<void> =>
+    apiClient.post('/auth/logout', refreshToken ? { refreshToken } : {}).then(() => undefined),
 
   refreshToken: (refreshToken: string): Promise<AuthTokens> =>
     apiClient.post<AuthTokens>('/auth/refresh', { refreshToken }).then((r) => r.data),

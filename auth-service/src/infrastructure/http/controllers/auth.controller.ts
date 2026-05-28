@@ -84,7 +84,8 @@ export const makeAuthController = (deps: {
       const schema = z.object({ refreshToken: z.string() });
       const data = schema.parse(req.body);
       const token = await deps.refresh.execute(data.refreshToken);
-      res.json(token);
+      // Always return the refreshToken so the client can keep it
+      res.json({ ...token, refreshToken: data.refreshToken });
     } catch (err) {
       next(err);
     }

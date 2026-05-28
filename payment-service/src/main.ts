@@ -40,10 +40,10 @@ async function start() {
   const controller = new PaymentsController(registerUC, historyUC);
 
   // mount normal routes
-  app.use('/api', paymentsRoutes(controller, STRIPE_WEBHOOK_SECRET));
+  app.use('/', paymentsRoutes(controller, STRIPE_WEBHOOK_SECRET));
 
   // stripe webhook route uses raw body
-  app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  app.post('/payments/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'] as string | undefined;
     const payload = req.body;
     try {

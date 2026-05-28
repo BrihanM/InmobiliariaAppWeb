@@ -8,17 +8,24 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-const navLinks = [
-  { to: '/dashboard', label: 'Resumen', icon: '📊' },
-  { to: '/dashboard/properties', label: 'Propiedades', icon: '🏠' },
-  { to: '/dashboard/users', label: 'Usuarios', icon: '👥' },
-  { to: '/dashboard/payments', label: 'Pagos', icon: '💳' },
-];
+interface NavItem {
+  to: string;
+  label: string;
+  icon: string;
+  end?: boolean;
+}
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { user } = useSession();
+  const { user, isAdmin } = useSession();
   const { logout, isLoading: isLoggingOut } = useLogout();
   const navigate = useNavigate();
+
+  const navLinks: NavItem[] = [
+    { to: '/dashboard', label: 'Resumen', icon: '📊', end: true },
+    { to: '/properties', label: 'Propiedades', icon: '🏠' },
+    ...(isAdmin ? [{ to: '/dashboard/users', label: 'Usuarios', icon: '👥' }] : []),
+    { to: '/payment/history', label: 'Pagos', icon: '💳' },
+  ];
 
   return (
     <div className="min-h-screen flex bg-gray-50">
@@ -35,7 +42,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <NavLink
               key={link.to}
               to={link.to}
-              end={link.to === '/dashboard'}
+              end={link.end}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
                   isActive

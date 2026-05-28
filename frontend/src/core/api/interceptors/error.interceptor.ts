@@ -52,11 +52,17 @@ export function attachErrorInterceptor(client: AxiosInstance): void {
           `${env.apiUrl}/auth/refresh`,
           { refreshToken: tokens.refreshToken }
         );
-        useAuthStore.getState().setTokens(data);
-        flushQueue(null, data.accessToken);
+        // Preserve the existing refreshToken if the server only returned a new accessToken
+        const merged: AuthTokens = {
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken ?? tokens.refreshToken,
+          expiresIn: data.expiresIn,
+        };
+        useAuthStore.getState().setTokens(merged);
+        flushQueue(null, merged.accessToken);
         if (original) {
           original.headers = original.headers ?? {};
-          original.headers['Authorization'] = `Bearer ${data.accessToken}`;
+          original.headers['Authorization'] = `Bearer ${merged.accessToken}`;
           return client(original);
         }
       } catch (refreshError) {
