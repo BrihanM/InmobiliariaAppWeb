@@ -55,10 +55,12 @@ while ((Get-Date) -lt $deadline) {
 if ((Get-Date) -ge $deadline) { Write-Error "Timeout esperando gateway"; docker compose ps; exit 2 }
 
 Write-Log "Ejecutando migraciones Prisma (auth-service)..."
-docker compose run --rm auth-service npx prisma migrate deploy || docker compose run --rm auth-service npm run prisma:migrate
+docker compose run --rm auth-service npx prisma migrate deploy
+if ($LASTEXITCODE -ne 0) { docker compose run --rm auth-service npm run prisma:migrate }
 
 Write-Log "Ejecutando seed (si existe)..."
-docker compose run --rm auth-service npm run seed || Write-Log "Seed no ejecutado o no definido"
+docker compose run --rm auth-service npm run seed
+if ($LASTEXITCODE -ne 0) { Write-Log "Seed no ejecutado o no definido" }
 
 Write-Log "Estado final de los contenedores:"
 docker compose ps
