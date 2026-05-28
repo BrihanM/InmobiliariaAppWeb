@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSession } from '@/features/auth/hooks/useSession';
 import type { Property } from '../types';
 
 const TYPE_LABELS: Record<Property['type'], string> = {
@@ -35,6 +36,7 @@ interface PropertyModalProps {
 }
 
 export function PropertyModal({ property, isOpen, onClose, onEdit }: PropertyModalProps) {
+  const { isAuthenticated, isAdmin, isAgent } = useSession();
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -53,6 +55,8 @@ export function PropertyModal({ property, isOpen, onClose, onEdit }: PropertyMod
 
   const mainImage = property.images[0] ?? PLACEHOLDER;
   const status = STATUS_CONFIG[property.status];
+  const canPay = isAuthenticated && !isAdmin && !isAgent && property.status === 'available';
+  const checkoutUrl = `/checkout?propertyId=${property.id}&title=${encodeURIComponent(property.title)}&address=${encodeURIComponent(`${property.address}, ${property.city}`)}&amount=${property.price}&currency=${property.currency}&image=${encodeURIComponent(property.images[0] ?? '')}`;
 
   return (
     <AnimatePresence>
@@ -160,6 +164,15 @@ export function PropertyModal({ property, isOpen, onClose, onEdit }: PropertyMod
               >
                 Ver detalle completo
               </Link>
+              {canPay && (
+                <Link
+                  to={checkoutUrl}
+                  onClick={onClose}
+                  className="flex-1 py-3 bg-emerald-600 text-white font-semibold rounded-xl text-center hover:bg-emerald-700 transition-colors text-sm"
+                >
+                  💳 Pagar ahora
+                </Link>
+              )}
               {onEdit && (
                 <button
                   onClick={() => { onEdit(property); onClose(); }}

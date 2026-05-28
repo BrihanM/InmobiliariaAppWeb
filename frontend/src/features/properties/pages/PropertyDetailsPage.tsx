@@ -157,6 +157,16 @@ export default function PropertyDetailsPage() {
                   Llamar al agente
                 </a>
 
+                {/* Payment CTA — authenticated non-agents on available properties */}
+                {user && !isAdminOrAgent && property.status === 'available' && (
+                  <Link
+                    to={`/checkout?propertyId=${property.id}&title=${encodeURIComponent(property.title)}&address=${encodeURIComponent(`${property.address}, ${property.city}`)}&amount=${property.price}&currency=${property.currency}&image=${encodeURIComponent(property.images[0] ?? '')}`}
+                    className="block w-full text-center py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-colors text-sm"
+                  >
+                    💳 Comprar / Pagar ahora
+                  </Link>
+                )}
+
                 {/* Admin/Agent actions */}
                 {isAdminOrAgent && (
                   <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">

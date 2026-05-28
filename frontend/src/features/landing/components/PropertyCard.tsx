@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Property } from '../types';
+import { usePropertyModalStore } from '@/shared/store/propertyModalStore';
 
 const TYPE_LABELS: Record<Property['type'], string> = {
   house: 'Casa',
@@ -31,6 +31,7 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ property }: PropertyCardProps) {
+  const { openModal } = usePropertyModalStore();
   const mainImage = property.images[0] ?? PLACEHOLDER;
   const status = STATUS_CONFIG[property.status];
 
@@ -38,9 +39,13 @@ export function PropertyCard({ property }: PropertyCardProps) {
     <motion.article
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+      className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+      onClick={() => openModal(property)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && openModal(property)}
+      aria-label={`Ver detalles de ${property.title}`}
     >
-      <Link to={`/properties/${property.id}`} aria-label={property.title}>
         {/* Image */}
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
@@ -131,7 +136,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
             </span>
           </div>
         </div>
-      </Link>
     </motion.article>
   );
 }

@@ -1,7 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthGuard } from './guards/AuthGuard';
 import { RoleGuard } from './guards/RoleGuard';
+import { RootLayout } from './RootLayout';
 import { Spinner } from '@/shared/components/ui/Spinner';
 
 const LandingPage = lazy(() => import('@/features/landing/pages/LandingPage'));
@@ -33,6 +35,9 @@ const loader = (
 );
 
 export const router = createBrowserRouter([
+  {
+    element: <RootLayout />,
+    children: [
   // Public routes
   { path: '/', element: <Suspense fallback={loader}><LandingPage /></Suspense> },
   { path: '/login', element: <Suspense fallback={loader}><LoginPage /></Suspense> },
@@ -74,4 +79,6 @@ export const router = createBrowserRouter([
   },
 
   { path: '*', element: <Suspense fallback={loader}><NotFoundPage /></Suspense> },
+  ],
+  },
 ]);

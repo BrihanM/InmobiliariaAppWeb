@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Property } from '@/features/properties/types';
+import { usePropertyModalStore } from '@/shared/store/propertyModalStore';
 
 const TYPE_LABELS: Record<Property['type'], string> = {
   house: 'Casa',
@@ -34,6 +34,7 @@ interface SearchResultCardProps {
 
 export function SearchResultCard({ property, view }: SearchResultCardProps) {
   const [imgError, setImgError] = useState(false);
+  const { openModal } = usePropertyModalStore();
   const mainImage = !imgError && property.images[0] ? property.images[0] : PLACEHOLDER;
   const status = STATUS_CONFIG[property.status];
 
@@ -44,7 +45,8 @@ export function SearchResultCard({ property, view }: SearchResultCardProps) {
         layout
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex bg-white rounded-2xl border border-slate-100 hover:shadow-md hover:border-indigo-100 transition-all duration-200 overflow-hidden group"
+        className="flex bg-white rounded-2xl border border-slate-100 hover:shadow-md hover:border-indigo-100 transition-all duration-200 overflow-hidden group cursor-pointer"
+        onClick={() => openModal(property)}
       >
         {/* Thumbnail */}
         <div className="relative w-40 sm:w-52 shrink-0 overflow-hidden">
@@ -71,11 +73,9 @@ export function SearchResultCard({ property, view }: SearchResultCardProps) {
             </div>
 
             {/* Title */}
-            <Link to={`/properties/${property.id}`}>
-              <h3 className="font-semibold text-slate-800 text-base leading-snug hover:text-indigo-600 transition-colors line-clamp-1">
-                {property.title}
-              </h3>
-            </Link>
+            <h3 className="font-semibold text-slate-800 text-base leading-snug hover:text-indigo-600 transition-colors line-clamp-1">
+              {property.title}
+            </h3>
 
             {/* Price */}
             <p className="text-xl font-extrabold text-indigo-600">
@@ -110,15 +110,15 @@ export function SearchResultCard({ property, view }: SearchResultCardProps) {
               <span>📐</span>
               <span>{property.area} m²</span>
             </span>
-            <Link
-              to={`/properties/${property.id}`}
+            <button
+              onClick={(e) => { e.stopPropagation(); openModal(property); }}
               className="ml-auto flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-800 whitespace-nowrap"
             >
               Ver detalle
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-            </Link>
+            </button>
           </div>
         </div>
       </motion.article>
@@ -133,7 +133,8 @@ export function SearchResultCard({ property, view }: SearchResultCardProps) {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-shadow duration-300 flex flex-col"
+      className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg transition-shadow duration-300 flex flex-col cursor-pointer"
+      onClick={() => openModal(property)}
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden shrink-0">
@@ -166,11 +167,9 @@ export function SearchResultCard({ property, view }: SearchResultCardProps) {
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
-        <Link to={`/properties/${property.id}`}>
-          <h3 className="font-semibold text-slate-800 text-sm leading-snug mb-1.5 line-clamp-2 hover:text-indigo-600 transition-colors">
+        <h3 className="font-semibold text-slate-800 text-sm leading-snug mb-1.5 line-clamp-2 group-hover:text-indigo-600 transition-colors">
             {property.title}
           </h3>
-        </Link>
 
         <p className="text-slate-400 text-xs flex items-center gap-1 mb-3">
           <svg className="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
