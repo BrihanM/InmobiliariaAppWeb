@@ -59,13 +59,23 @@ docker compose up -d --build
 ### 4. Aplicar migraciones y seeds (solo la primera vez)
 
 ```bash
-# auth-service: crear tablas + 3 usuarios (admin / agente / cliente)
+# 1. auth-service: tablas + 6 usuarios simulados
 cd auth-service
 npx prisma migrate deploy
 npm run seed
 
-# property-service: crear tablas + 20 propiedades colombianas
+# 2. user-service: espejo de usuarios con bcrypt
+cd ../user-service
+npx prisma migrate deploy
+npm run seed
+
+# 3. property-service: tablas + 20 propiedades colombianas
 cd ../property-service
+npx prisma migrate deploy
+npm run seed
+
+# 4. payment-service: 12 pagos simulados vinculados a propiedades reales
+cd ../payment-service
 npx prisma migrate deploy
 npm run seed
 ```
@@ -76,7 +86,10 @@ Credenciales creadas por el seed:
 |----------------------------|--------------|--------|
 | admin@inmobiliaria.co      | Admin123!    | ADMIN  |
 | agente@inmobiliaria.co     | Agente123!   | AGENT  |
+| sandra@inmobiliaria.co     | Sandra123!   | AGENT  |
 | cliente@inmobiliaria.co    | Cliente123!  | CLIENT |
+| juan@inmobiliaria.co       | Juan123!     | CLIENT |
+| laura@inmobiliaria.co      | Laura123!    | CLIENT |
 
 ### 5. Arrancar el frontend
 
